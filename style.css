@@ -1,0 +1,150 @@
+:root {
+    --primary-font: 'Cinzel', serif;
+    --secondary-font: 'Inter', sans-serif;
+    --saffron: #FF9933;
+    --chakra-blue: #000080;
+    --green: #138808;
+    --text-dark: #1a1a1a;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--secondary-font);
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+/* Three.js Canvas Fixed Background */
+#webgl-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: radial-gradient(circle at center, #fdfbf7 0%, #e0dcd3 100%);
+}
+
+/* Flexible, Stretchable Header */
+.site-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 4rem;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 128, 0.1);
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.brand-logo {
+    height: 50px;
+    width: auto;
+}
+
+.brand-text h1 {
+    font-family: var(--primary-font);
+    font-size: 1.5rem;
+    color: var(--chakra-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.brand-text p {
+    font-size: 0.85rem;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.header-right {
+    display: flex;
+    gap: 2rem;
+}
+
+.header-right a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+.header-right a:hover {
+    color: var(--saffron);
+}
+
+/* Content Sections */
+.content {
+    position: relative;
+    z-index: 1;
+    padding-top: 120px; /* Offset for header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 100vh; /* Spaces sections out to show 3D background */
+    padding-bottom: 20vh;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 4rem;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: 4px solid var(--saffron);
+}
+
+.glass-panel h2 {
+    font-family: var(--primary-font);
+    color: var(--chakra-blue);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.glass-panel p {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: #444;
+}
+
+/* Responsive Behaviour */
+@media (max-width: 768px) {
+    .site-header {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .header-right {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .brand-text h1 {
+        font-size: 1.2rem;
+    }
+    .glass-panel {
+        padding: 2rem;
+    }
+}
