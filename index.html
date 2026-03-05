@@ -221,16 +221,24 @@ main {
 }
 
 /* Portrait frame */
+/* NEW */
 .portrait-frame {
   width: clamp(180px, 28vw, 320px);
   height: clamp(180px, 28vw, 320px);
   margin: 0 auto 40px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
+/* NEW */
 .portrait-ring {
   position: absolute;
-  inset: -14px;
+  width: 200%;
+  height: 200%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
   background: conic-gradient(
     var(--saffron) 0deg 120deg,
@@ -239,20 +247,25 @@ main {
   );
   animation: spinRing 18s linear infinite;
   opacity: 0.7;
+  z-index: 0;
+}
+
+.portrait-ring-inner {
+  position: absolute;
+  width: calc(200% - 14px);
+  height: calc(200% - 14px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--dark);
+  z-index: 1;
 }
 
 @keyframes spinRing {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
-
-.portrait-ring-inner {
-  position: absolute;
-  inset: -7px;
-  border-radius: 50%;
-  background: var(--dark);
-}
-
 .portrait-img {
   width: 100%;
   height: 100%;
