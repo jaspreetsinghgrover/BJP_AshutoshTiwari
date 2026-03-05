@@ -1,1171 +1,1286 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Legacy of Freedom — A Heritage of Independence</title>
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet" />
-
-<!-- Three.js from official CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-<style>
-/* ─── CSS Variables ─────────────────────────────────────── */
-:root {
-  --saffron:     #FF9933;
-  --deep-saffron:#E07B00;
-  --india-green: #138808;
-  --deep-green:  #0A5C05;
-  --navy:        #000080;  /* Ashoka Chakra blue */
-  --chakra-blue: #1A3C8F;
-  --ivory:       #FAF3E0;
-  --cream:       #F5E6C8;
-  --gold:        #C9A84C;
-  --gold-light:  #F0D080;
-  --dark:        #0D0A06;
-  --text-dark:   #1A1208;
-  --text-mid:    #3D2B10;
-  --header-h:    72px;
-}
-
-/* ─── Reset & Base ──────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
-
-body {
-  background: var(--dark);
-  color: var(--ivory);
-  font-family: 'EB Garamond', Georgia, serif;
-  overflow-x: hidden;
-  cursor: default;
-}
-
-/* ─── Custom Scrollbar ──────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--dark); }
-::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
-
-/* ─── Three.js Canvas ───────────────────────────────────── */
-#three-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* ─── HEADER ────────────────────────────────────────────── */
-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--header-h);
-  z-index: 100;
-  display: flex;
-  align-items: stretch;
-  background: linear-gradient(
-    135deg,
-    rgba(13,10,6,0.97) 0%,
-    rgba(26,20,8,0.95) 50%,
-    rgba(13,10,6,0.97) 100%
-  );
-  border-bottom: 1px solid rgba(201,168,76,0.35);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 2px 40px rgba(0,0,0,0.6), 0 1px 0 rgba(201,168,76,0.15);
-}
-
-/* Gold top accent line */
-header::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg,
-    var(--saffron) 0%,
-    var(--gold-light) 33%,
-    white 50%,
-    var(--gold-light) 66%,
-    var(--india-green) 100%
-  );
-}
-
-/* Left: Logo + Title */
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 24px;
-  flex-shrink: 0;
-  min-width: 0;
-}
-
-.header-logo {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
-  position: relative;
-}
-
-.header-logo svg { width: 100%; height: 100%; }
-
-.header-text { min-width: 0; }
-
-.header-title {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(0.7rem, 1.4vw, 1rem);
-  font-weight: 700;
-  color: var(--gold-light);
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-  text-shadow: 0 0 20px rgba(201,168,76,0.4);
-}
-
-.header-caption {
-  font-family: 'EB Garamond', serif;
-  font-size: clamp(0.6rem, 1vw, 0.78rem);
-  color: rgba(250,243,224,0.6);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-top: 2px;
-  white-space: nowrap;
-  font-style: italic;
-}
-
-/* Divider */
-.header-divider {
-  width: 1px;
-  margin: 12px 0;
-  background: linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
-  flex-shrink: 0;
-}
-
-/* Right: Nav */
-.header-nav {
-  flex: 1;
-  overflow-x: auto;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  gap: 4px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.header-nav::-webkit-scrollbar { display: none; }
-
-.nav-item {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.55rem, 0.9vw, 0.72rem);
-  font-weight: 500;
-  color: rgba(250,243,224,0.65);
-  text-decoration: none;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  padding: 6px 12px;
-  border-radius: 3px;
-  transition: all 0.25s ease;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.nav-item::after {
-  content: '';
-  position: absolute;
-  bottom: 2px; left: 50%; right: 50%;
-  height: 1px;
-  background: var(--gold);
-  transition: all 0.25s ease;
-}
-
-.nav-item:hover {
-  color: var(--gold-light);
-  background: rgba(201,168,76,0.08);
-}
-.nav-item:hover::after { left: 12%; right: 12%; }
-
-/* ─── MAIN CONTENT ──────────────────────────────────────── */
-main {
-  position: relative;
-  z-index: 10;
-  margin-top: var(--header-h);
-}
-
-/* ─── HERO ──────────────────────────────────────────────── */
-#hero {
-  min-height: calc(100vh - var(--header-h));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  padding: 60px 24px;
-}
-
-.hero-content {
-  text-align: center;
-  max-width: 900px;
-  position: relative;
-  z-index: 2;
-  animation: heroReveal 1.4s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-@keyframes heroReveal {
-  from { opacity: 0; transform: translateY(40px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Portrait frame */
-.portrait-frame {
-  width: clamp(180px, 28vw, 320px);
-  height: clamp(180px, 28vw, 320px);
-  margin: 0 auto 40px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-}
-.portrait-ring {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--saffron) 0deg 120deg,
-    white 120deg 240deg,
-    var(--india-green) 240deg 360deg
-  );
-  animation: spinRing 18s linear infinite;
-  opacity: 0.7;
-  z-index: 0;
-}
-.portrait-ring-inner {
-  position: absolute;
-  width: calc(200% - 14px);
-  height: calc(200% - 14px);
-  top: calc(-50% + 7px);
-  left: calc(-50% + 7px);
-  border-radius: 50%;
-  background: var(--dark);
-  z-index: 1;
-}
-@keyframes spinRing {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-.portrait-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: top center;
-  position: relative;
-  z-index: 2;
-  border: 3px solid var(--gold);
-  /* Placeholder gradient when no image */
-  background: radial-gradient(circle at 35% 35%,
-    rgba(255,153,51,0.3),
-    rgba(19,136,8,0.2),
-    rgba(26,60,143,0.4)
-  );
-  display: block;
-}
-
-/* Portrait placeholder SVG */
-.portrait-placeholder {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: relative;
-  z-index: 2;
-  border: 3px solid var(--gold);
-  background: radial-gradient(ellipse at 40% 30%,
-    rgba(255,153,51,0.15) 0%,
-    rgba(13,10,6,0.9) 70%
-  );
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.portrait-placeholder-label {
-  font-family: 'EB Garamond', serif;
-  font-size: 0.7rem;
-  color: rgba(250,243,224,0.4);
-  text-align: center;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 16px;
-  line-height: 1.6;
-}
-
-.hero-eyebrow {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--saffron);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.hero-eyebrow::before,
-.hero-eyebrow::after {
-  content: '';
-  display: block;
-  width: clamp(30px, 6vw, 80px);
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--saffron));
-}
-.hero-eyebrow::after { background: linear-gradient(90deg, var(--saffron), transparent); }
-
-.hero-name {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(1.8rem, 6vw, 4.5rem);
-  font-weight: 900;
-  line-height: 1.05;
-  color: var(--gold-light);
-  text-shadow:
-    0 0 60px rgba(201,168,76,0.4),
-    0 2px 4px rgba(0,0,0,0.5);
-  margin-bottom: 10px;
-}
-
-.hero-subname {
-  font-family: 'Tiro Devanagari Hindi', serif;
-  font-size: clamp(1.2rem, 3vw, 2rem);
-  color: rgba(250,243,224,0.55);
-  margin-bottom: 24px;
-  letter-spacing: 0.05em;
-}
-
-.hero-tagline {
-  font-family: 'EB Garamond', serif;
-  font-size: clamp(0.95rem, 2vw, 1.3rem);
-  font-style: italic;
-  color: rgba(250,243,224,0.7);
-  max-width: 640px;
-  margin: 0 auto 40px;
-  line-height: 1.7;
-}
-
-.hero-dates {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
-  letter-spacing: 0.25em;
-  color: var(--gold);
-  opacity: 0.8;
-}
-
-/* ─── SECTION BASE ──────────────────────────────────────── */
-.section {
-  padding: clamp(60px, 8vw, 120px) clamp(20px, 6vw, 80px);
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.section-full {
-  padding: clamp(60px, 8vw, 120px) 0;
-  position: relative;
-}
-
-.section-bg-saffron {
-  background: linear-gradient(160deg,
-    rgba(255,153,51,0.04) 0%,
-    rgba(201,168,76,0.06) 50%,
-    transparent 100%
-  );
-}
-
-.section-bg-green {
-  background: linear-gradient(160deg,
-    rgba(19,136,8,0.05) 0%,
-    rgba(10,92,5,0.08) 50%,
-    transparent 100%
-  );
-}
-
-.section-bg-blue {
-  background: linear-gradient(160deg,
-    rgba(26,60,143,0.06) 0%,
-    rgba(0,0,128,0.08) 50%,
-    transparent 100%
-  );
-}
-
-/* ─── Section Label ─────────────────────────────────────── */
-.section-label {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.6rem, 1vw, 0.72rem);
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: var(--saffron);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.section-label::before {
-  content: '';
-  display: block;
-  width: 24px; height: 1px;
-  background: var(--saffron);
-}
-
-.section-title {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(1.5rem, 4vw, 3rem);
-  font-weight: 700;
-  color: var(--gold-light);
-  line-height: 1.15;
-  margin-bottom: 8px;
-}
-
-.section-subtitle {
-  font-family: 'EB Garamond', serif;
-  font-style: italic;
-  font-size: clamp(0.9rem, 1.6vw, 1.15rem);
-  color: rgba(250,243,224,0.55);
-  margin-bottom: 48px;
-}
-
-/* ─── Divider ornament ──────────────────────────────────── */
-.ornament-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: 60px 0;
-  opacity: 0.5;
-}
-
-.ornament-divider::before,
-.ornament-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold));
-}
-.ornament-divider::after { background: linear-gradient(90deg, var(--gold), transparent); }
-
-/* ─── TIMELINE ──────────────────────────────────────────── */
-.timeline {
-  position: relative;
-  padding-left: clamp(24px, 4vw, 60px);
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: clamp(6px, 1.5vw, 20px);
-  top: 0; bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom,
-    var(--saffron),
-    var(--gold),
-    var(--india-green)
-  );
-}
-
-.timeline-item {
-  position: relative;
-  margin-bottom: 48px;
-  animation: fadeSlide 0.6s ease both;
-}
-
-@keyframes fadeSlide {
-  from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.timeline-dot {
-  position: absolute;
-  left: clamp(-30px, -3.5vw, -46px);
-  top: 6px;
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  background: var(--gold);
-  border: 2px solid var(--dark);
-  box-shadow: 0 0 10px var(--gold);
-}
-
-.timeline-year {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: var(--saffron);
-  margin-bottom: 6px;
-}
-
-.timeline-heading {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
-  font-weight: 600;
-  color: var(--gold-light);
-  margin-bottom: 8px;
-}
-
-.timeline-text {
-  font-family: 'EB Garamond', serif;
-  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
-  color: rgba(250,243,224,0.72);
-  line-height: 1.75;
-}
-
-/* ─── QUOTE BLOCK ───────────────────────────────────────── */
-.quote-block {
-  position: relative;
-  border-left: 3px solid var(--gold);
-  padding: 24px 32px;
-  margin: 48px 0;
-  background: rgba(201,168,76,0.04);
-  border-radius: 0 8px 8px 0;
-}
-
-.quote-block::before {
-  content: '"';
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 6rem;
-  color: var(--gold);
-  opacity: 0.15;
-  position: absolute;
-  top: -20px; left: 16px;
-  line-height: 1;
-  pointer-events: none;
-}
-
-.quote-text {
-  font-family: 'EB Garamond', serif;
-  font-style: italic;
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  color: var(--ivory);
-  line-height: 1.8;
-  margin-bottom: 12px;
-}
-
-.quote-attr {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: var(--gold);
-  text-transform: uppercase;
-}
-
-/* ─── CARD GRID ─────────────────────────────────────────── */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-  gap: 24px;
-  margin-top: 40px;
-}
-
-.card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(201,168,76,0.18);
-  border-radius: 8px;
-  padding: 28px 24px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--saffron), var(--india-green));
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.card:hover {
-  background: rgba(201,168,76,0.06);
-  border-color: rgba(201,168,76,0.35);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-}
-.card:hover::before { opacity: 1; }
-
-.card-icon {
-  font-size: 2rem;
-  margin-bottom: 16px;
-}
-
-.card-title {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.85rem, 1.3vw, 1rem);
-  font-weight: 600;
-  color: var(--gold-light);
-  margin-bottom: 10px;
-  letter-spacing: 0.05em;
-}
-
-.card-text {
-  font-family: 'EB Garamond', serif;
-  font-size: clamp(0.88rem, 1.3vw, 1rem);
-  color: rgba(250,243,224,0.65);
-  line-height: 1.7;
-}
-
-/* ─── FOOTER ────────────────────────────────────────────── */
-footer {
-  border-top: 1px solid rgba(201,168,76,0.15);
-  padding: 40px clamp(20px,6vw,80px);
-  text-align: center;
-  position: relative;
-  z-index: 10;
-}
-
-.footer-chakra {
-  width: 40px; height: 40px;
-  margin: 0 auto 20px;
-  opacity: 0.4;
-  animation: spin 20s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.footer-text {
-  font-family: 'EB Garamond', serif;
-  font-size: 0.85rem;
-  color: rgba(250,243,224,0.35);
-  letter-spacing: 0.1em;
-}
-
-.footer-tricolor {
-  display: flex;
-  justify-content: center;
-  gap: 0;
-  margin: 20px auto 0;
-  width: 120px;
-  height: 3px;
-  overflow: hidden;
-  border-radius: 2px;
-}
-
-.footer-tricolor span {
-  flex: 1;
-}
-
-/* ─── RESPONSIVE ────────────────────────────────────────── */
-@media (max-width: 768px) {
-  :root { --header-h: 60px; }
-  .header-left { padding: 0 14px; gap: 10px; }
-  .header-logo { width: 36px; height: 36px; }
-  .header-nav { padding: 0 14px; gap: 2px; }
-  .nav-item { padding: 5px 9px; }
-  .section { padding: 50px 20px; }
-}
-
-@media (max-width: 480px) {
-  :root { --header-h: 56px; }
-  .header-logo { width: 32px; height: 32px; }
-  .header-title { font-size: 0.68rem; }
-  .header-caption { display: none; }
-}
-
-/* ─── Reveal animation for sections ────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: none;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shri Ashutosh Tiwari| BJP Karyakarta</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap"
+    rel="stylesheet" />
+
+  <!-- Three.js from official CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ─── CSS Variables ─────────────────────────────────────── */
+    :root {
+      --saffron: #FF9933;
+      --deep-saffron: #E07B00;
+      --india-green: #138808;
+      --deep-green: #0A5C05;
+      --navy: #000080;
+      /* Ashoka Chakra blue */
+      --chakra-blue: #1A3C8F;
+      --ivory: #FAF3E0;
+      --cream: #F5E6C8;
+      --gold: #C9A84C;
+      --gold-light: #F0D080;
+      --dark: #0D0A06;
+      --text-dark: #1A1208;
+      --text-mid: #3D2B10;
+      --header-h: 72px;
+    }
+
+    /* ─── Reset & Base ──────────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background: var(--dark);
+      color: var(--ivory);
+      font-family: 'EB Garamond', Georgia, serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ─── Custom Scrollbar ──────────────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold);
+      border-radius: 3px;
+    }
+
+    /* ─── Three.js Canvas ───────────────────────────────────── */
+    #three-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ─── HEADER ────────────────────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      z-index: 100;
+      display: flex;
+      align-items: stretch;
+      background: linear-gradient(135deg,
+          rgba(13, 10, 6, 0.97) 0%,
+          rgba(26, 20, 8, 0.95) 50%,
+          rgba(13, 10, 6, 0.97) 100%);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.35);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 2px 40px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(201, 168, 76, 0.15);
+    }
+
+    /* Gold top accent line */
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg,
+          var(--saffron) 0%,
+          var(--gold-light) 33%,
+          white 50%,
+          var(--gold-light) 66%,
+          var(--india-green) 100%);
+    }
+
+    /* Left: Logo + Title */
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 24px;
+      flex-shrink: 0;
+      min-width: 0;
+    }
+
+    .header-logo {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .header-logo svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .header-text {
+      min-width: 0;
+    }
+
+    .header-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(0.7rem, 1.4vw, 1rem);
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+      text-shadow: 0 0 20px rgba(201, 168, 76, 0.4);
+    }
+
+    .header-caption {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.6rem, 1vw, 0.78rem);
+      color: rgba(250, 243, 224, 0.6);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 2px;
+      white-space: nowrap;
+      font-style: italic;
+    }
+
+    /* Divider */
+    .header-divider {
+      width: 1px;
+      margin: 12px 0;
+      background: linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+      flex-shrink: 0;
+    }
+
+    /* Right: Nav */
+    .header-nav {
+      flex: 1;
+      overflow-x: auto;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 4px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .header-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-item {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.55rem, 0.9vw, 0.72rem);
+      font-weight: 500;
+      color: rgba(250, 243, 224, 0.65);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding: 6px 12px;
+      border-radius: 3px;
+      transition: all 0.25s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      right: 50%;
+      height: 1px;
+      background: var(--gold);
+      transition: all 0.25s ease;
+    }
+
+    .nav-item:hover {
+      color: var(--gold-light);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .nav-item:hover::after {
+      left: 12%;
+      right: 12%;
+    }
+
+    /* ─── MAIN CONTENT ──────────────────────────────────────── */
+    main {
+      position: relative;
+      z-index: 10;
+      margin-top: var(--header-h);
+    }
+
+    /* ─── HERO ──────────────────────────────────────────────── */
+    #hero {
+      min-height: calc(100vh - var(--header-h));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 60px 24px;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 900px;
+      position: relative;
+      z-index: 2;
+      animation: heroReveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes heroReveal {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .portrait-frame {
+      --frame-size: clamp(180px, 28vw, 320px);
+      --ring-size: calc(var(--frame-size) * 2);
+      width: var(--frame-size);
+      height: var(--frame-size);
+      margin: 0 auto 40px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portrait-ring {
+      position: absolute;
+      width: var(--ring-size);
+      height: var(--ring-size);
+      top: 50%;
+      left: 50%;
+      margin-top: calc(var(--ring-size) / -2);
+      margin-left: calc(var(--ring-size) / -2);
+      border-radius: 50%;
+      border: 6px solid transparent;
+      background:
+        transparent padding-box,
+        conic-gradient(var(--saffron) 0deg 120deg,
+          white 120deg 240deg,
+          var(--india-green) 240deg 360deg) border-box;
+      animation: spinRing 18s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .portrait-ring-inner {
+      display: none;
+    }
+
+    @keyframes spinRing {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .portrait-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      position: relative;
+      z-index: 2;
+      border: 3px solid var(--gold);
+      /* Placeholder gradient when no image */
+      background: radial-gradient(circle at 35% 35%,
+          rgba(255, 153, 51, 0.3),
+          rgba(19, 136, 8, 0.2),
+          rgba(26, 60, 143, 0.4));
+      display: block;
+    }
+
+    /* Portrait placeholder SVG */
+    .portrait-placeholder {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      z-index: 2;
+      border: 3px solid var(--gold);
+      background: radial-gradient(ellipse at 40% 30%,
+          rgba(255, 153, 51, 0.15) 0%,
+          rgba(13, 10, 6, 0.9) 70%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portrait-placeholder-label {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.7rem;
+      color: rgba(250, 243, 224, 0.4);
+      text-align: center;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 16px;
+      line-height: 1.6;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: clamp(30px, 6vw, 80px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--saffron));
+    }
+
+    .hero-eyebrow::after {
+      background: linear-gradient(90deg, var(--saffron), transparent);
+    }
+
+    .hero-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.8rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--gold-light);
+      text-shadow:
+        0 0 60px rgba(201, 168, 76, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 10px;
+    }
+
+    .hero-subname {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      color: rgba(250, 243, 224, 0.55);
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-tagline {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.95rem, 2vw, 1.3rem);
+      font-style: italic;
+      color: rgba(250, 243, 224, 0.7);
+      max-width: 640px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-dates {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      opacity: 0.8;
+    }
+
+    /* ─── SECTION BASE ──────────────────────────────────────── */
+    .section {
+      padding: clamp(60px, 8vw, 120px) clamp(20px, 6vw, 80px);
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .section-full {
+      padding: clamp(60px, 8vw, 120px) 0;
+      position: relative;
+    }
+
+    .section-bg-saffron {
+      background: linear-gradient(160deg,
+          rgba(255, 153, 51, 0.04) 0%,
+          rgba(201, 168, 76, 0.06) 50%,
+          transparent 100%);
+    }
+
+    .section-bg-green {
+      background: linear-gradient(160deg,
+          rgba(19, 136, 8, 0.05) 0%,
+          rgba(10, 92, 5, 0.08) 50%,
+          transparent 100%);
+    }
+
+    .section-bg-blue {
+      background: linear-gradient(160deg,
+          rgba(26, 60, 143, 0.06) 0%,
+          rgba(0, 0, 128, 0.08) 50%,
+          transparent 100%);
+    }
+
+    /* ─── Section Label ─────────────────────────────────────── */
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.6rem, 1vw, 0.72rem);
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--saffron);
+    }
+
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: clamp(0.9rem, 1.6vw, 1.15rem);
+      color: rgba(250, 243, 224, 0.55);
+      margin-bottom: 48px;
+    }
+
+    /* ─── Divider ornament ──────────────────────────────────── */
+    .ornament-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 60px 0;
+      opacity: 0.5;
+    }
+
+    .ornament-divider::before,
+    .ornament-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+
+    .ornament-divider::after {
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    /* ─── TIMELINE ──────────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: clamp(24px, 4vw, 60px);
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: clamp(6px, 1.5vw, 20px);
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom,
+          var(--saffron),
+          var(--gold),
+          var(--india-green));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 48px;
+      animation: fadeSlide 0.6s ease both;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: clamp(-30px, -3.5vw, -46px);
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--dark);
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .timeline-year {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--saffron);
+      margin-bottom: 6px;
+    }
+
+    .timeline-heading {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+      font-weight: 600;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+
+    .timeline-text {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+      color: rgba(250, 243, 224, 0.72);
+      line-height: 1.75;
+    }
+
+    /* ─── QUOTE BLOCK ───────────────────────────────────────── */
+    .quote-block {
+      position: relative;
+      border-left: 3px solid var(--gold);
+      padding: 24px 32px;
+      margin: 48px 0;
+      background: rgba(201, 168, 76, 0.04);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .quote-block::before {
+      content: '"';
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 6rem;
+      color: var(--gold);
+      opacity: 0.15;
+      position: absolute;
+      top: -20px;
+      left: 16px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .quote-text {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--ivory);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .quote-attr {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    /* ─── CARD GRID ─────────────────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(201, 168, 76, 0.18);
+      border-radius: 8px;
+      padding: 28px 24px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--saffron), var(--india-green));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover {
+      background: rgba(201, 168, 76, 0.06);
+      border-color: rgba(201, 168, 76, 0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 13px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(201, 168, 76, 0.3);
+    }
+
+    .card-icon img {
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .card-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.85rem, 1.3vw, 1rem);
+      font-weight: 600;
+      color: var(--gold-light);
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .card-text {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(0.88rem, 1.3vw, 1rem);
+      color: rgba(250, 243, 224, 0.65);
+      line-height: 1.7;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(201, 168, 76, 0.15);
+      padding: 40px clamp(20px, 6vw, 80px);
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer-chakra {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 20px;
+      opacity: 0.4;
+      animation: spin 20s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .footer-text {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.85rem;
+      color: rgba(250, 243, 224, 0.35);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-tricolor {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin: 20px auto 0;
+      width: 120px;
+      height: 3px;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .footer-tricolor span {
+      flex: 1;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      :root {
+        --header-h: 60px;
+      }
+
+      .header-left {
+        padding: 0 14px;
+        gap: 10px;
+      }
+
+      .header-logo {
+        width: 36px;
+        height: 36px;
+      }
+
+      .header-nav {
+        padding: 0 14px;
+        gap: 2px;
+      }
+
+      .nav-item {
+        padding: 5px 9px;
+      }
+
+      .section {
+        padding: 50px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        --header-h: 56px;
+      }
+
+      .header-logo {
+        width: 32px;
+        height: 32px;
+      }
+
+      .header-title {
+        font-size: 0.68rem;
+      }
+
+      .header-caption {
+        display: none;
+      }
+    }
+
+    /* ─── Reveal animation for sections ────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- ══════════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════════
      THREE.JS CANVAS
 ══════════════════════════════════════════════════════════════ -->
-<canvas id="three-canvas"></canvas>
+  <canvas id="three-canvas"></canvas>
 
-<!-- ══════════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════════
      HEADER
 ══════════════════════════════════════════════════════════════ -->
-<header role="banner">
+  <header role="banner">
 
-  <!-- Left: Logo + Branding -->
-  <div class="header-left">
-    <!-- Ashoka Chakra SVG Logo -->
-    <div class="header-logo" aria-label="Ashoka Chakra">
-         <img class="portrait-img" src="2.jpg" alt="Shri Ashutosh Tiwari Ji, BJP Vidhayak from Bathinda, Punjab" />
+    <!-- Left: Logo + Branding -->
+    <div class="header-left">
+      <!-- Ashoka Chakra SVG Logo -->
+      <div class="header-logo" aria-label="Ashoka Chakra">
+        <img class="portrait-img" src="2.jpg" alt="Shri Ashutosh Tiwari Ji, BJP Vidhayak from Bathinda, Punjab" />
+      </div>
+      <div class="header-text">
+        <div class="header-title">Ashutosh Tiwari</div>
+        <div class="header-caption">BJP Karyakarta</div>
+      </div>
     </div>
-    <div class="header-text">
-      <div class="header-title">Ashutosh Tiwari</div>
-      <div class="header-caption">BJP Karyakarta</div>
-    </div>
-  </div>
 
-  <div class="header-divider" aria-hidden="true"></div>
+    <div class="header-divider" aria-hidden="true"></div>
 
-  <!-- Right: Scrollable Navigation -->
-  <nav class="header-nav" role="navigation" aria-label="Section navigation">
-    <a href="#hero"      class="nav-item">Home</a>
-    <a href="#legacy"    class="nav-item">The Legacy</a>
-    <a href="#freedom"   class="nav-item">Freedom Movement</a>
-    <a href="#lineage"   class="nav-item">Lineage</a>
-    <a href="#values"    class="nav-item">Values</a>
-    <a href="#timeline"  class="nav-item">Timeline</a>
-    <a href="#symbols"   class="nav-item">Symbols</a>
-    <a href="#vision"    class="nav-item">Vision</a>
-    <a href="#contact"   class="nav-item">Connect</a>
-  </nav>
+    <!-- Right: Scrollable Navigation -->
+    <nav class="header-nav" role="navigation" aria-label="Section navigation">
+      <a href="#hero" class="nav-item">Home</a>
+      <a href="#legacy" class="nav-item">The Legacy</a>
+      <a href="#freedom" class="nav-item">Freedom Movement</a>
+      <a href="#lineage" class="nav-item">Lineage</a>
+      <a href="#values" class="nav-item">Values</a>
+      <a href="#timeline" class="nav-item">Timeline</a>
+      <a href="#symbols" class="nav-item">Symbols</a>
+      <a href="#vision" class="nav-item">Vision</a>
+      <a href="#contact" class="nav-item">Connect</a>
+    </nav>
 
-</header>
+  </header>
 
-<!-- ══════════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════════
      MAIN
 ══════════════════════════════════════════════════════════════ -->
-<main>
+  <main>
 
-  <!-- ── HERO ─────────────────────────────────────────── -->
-  <section id="hero">
-    <div class="hero-content">
+    <!-- ── HERO ─────────────────────────────────────────── -->
+    <section id="hero">
+      <div class="hero-content">
 
-      <!-- Portrait -->
-      <div class="portrait-frame" aria-label="Portrait">
-        <div class="portrait-ring" aria-hidden="true"></div>
-        <div class="portrait-ring-inner" aria-hidden="true"></div>
-        <!--
+        <!-- Portrait -->
+        <div class="portrait-frame" aria-label="Portrait">
+          <div class="portrait-ring" aria-hidden="true"></div>
+          <div class="portrait-ring-inner" aria-hidden="true"></div>
+          <!--
           REPLACE THE DIV BELOW with:
           <img class="portrait-img" src="YOUR_IMAGE.jpg" alt="Name of the person" />
           and remove the placeholder div
         -->
-           <img class="portrait-img" src="1.jpg" alt="Shri Ashutosh Tiwari Ji, BJP Vidhayak from Bathinda, Punjab" />
-        <!-- <div class="portrait-placeholder" id="portrait-drop" title="Drop portrait image here">
+          <img class="portrait-img" src="1.jpg" alt="Shri Ashutosh Tiwari Ji, BJP Vidhayak from Bathinda, Punjab" />
+          <!-- <div class="portrait-placeholder" id="portrait-drop" title="Drop portrait image here">
           <div class="portrait-placeholder-label">
             Drop portrait<br/>image here<br/>or update src
           </div>
         </div> -->
-      </div>
+        </div>
 
-      <div class="hero-eyebrow">Vande Mataram</div>
-      <h1 class="hero-name">Nayak Family</h1>
-      <div class="hero-subname">नायक परिवार</div>
-      <p class="hero-tagline">
-        "From the flames of the First War of Independence to the halls of democratic power:
-        A Dynasty forged in sacrifice, tempered by truth."
-      </p>
-      <div class="hero-dates">1857 · 1947 · Present</div>
-    </div>
-  </section>
-
-  <!-- ── LEGACY ─────────────────────────────────────── -->
-  <section id="legacy" class="section-full section-bg-saffron">
-    <div class="section reveal">
-      <div class="section-label">Our Roots</div>
-      <h2 class="section-title">A Legacy Carved in Courage</h2>
-      <p class="section-subtitle">Generations who chose nation over self</p>
-
-      <p style="font-family:'EB Garamond',serif;font-size:clamp(1rem,1.6vw,1.18rem);color:rgba(250,243,224,0.78);line-height:1.85;max-width:800px;">
-        The story of this family is inseparable from the story of India itself. For nearly two centuries,
-        each generation has stepped forward when the motherland called — offering their voices, their freedoms,
-        and sometimes their lives in service of the dream of a free and unified Bharat.
-      </p>
-
-      <div class="quote-block" style="max-width:760px;margin-top:40px;">
-        <p class="quote-text">
-          "They did not merely witness history. They were its architects, its price, and its promise."
+        <div class="hero-eyebrow">Vande Mataram</div>
+        <h1 class="hero-name">Shri Ashutosh Tiwari</h1>
+        <div class="hero-subname">BJP Karyakarta</div>
+        <p class="hero-tagline">
+          "From the flames of the First War of Independence to the halls of democratic power:
+          A Dynasty forged in sacrifice, tempered by truth."
         </p>
-        <span class="quote-attr">— Family Inscription, 1947</span>
+        <div class="hero-dates">RSS → ABVP → BJYM → BJP</div>
       </div>
+    </section>
 
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-icon">🪷</div>
-          <div class="card-title">Rooted in the Lotus Tradition</div>
-          <p class="card-text">
-            Like the lotus that blooms unstained from the mud, this family rose through colonial oppression
-            to bear the flower of independence.
-          </p>
-        </div>
-        <div class="card">
-          <div class="card-icon">🦁</div>
-          <div class="card-title">The Lion Capital's Resolve</div>
-          <p class="card-text">
-            Embodying the four lions of Ashoka's capital — vigilance, strength, pride, and unity —
-            they stood undivided through every trial.
-          </p>
-        </div>
-        <div class="card">
-          <div class="card-icon">⚙️</div>
-          <div class="card-title">Turning the Wheel of Dharma</div>
-          <p class="card-text">
-            Guided by the Ashoka Chakra's twenty-four spokes — each a virtue, each a duty —
-            their political work was always in service of a higher law.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- ── LEGACY ─────────────────────────────────────── -->
+    <section id="legacy" class="section-full section-bg-saffron">
+      <div class="section reveal">
+        <div class="section-label">Our Roots</div>
+        <h2 class="section-title">A Legacy Carved in Courage</h2>
+        <p class="section-subtitle">Generations who chose nation over self</p>
 
-  <div class="ornament-divider" aria-hidden="true">
-    <svg width="24" height="24" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#C9A84C" stroke-width="3" opacity="0.5"/><circle cx="50" cy="50" r="6" fill="#C9A84C" opacity="0.5"/></svg>
-  </div>
-
-  <!-- ── FREEDOM MOVEMENT ───────────────────────────── -->
-  <section id="freedom" class="section-full section-bg-green">
-    <div class="section reveal">
-      <div class="section-label">Itihas</div>
-      <h2 class="section-title">Freedom Movement</h2>
-      <p class="section-subtitle">The battles they fought so we could be free</p>
-
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-title">Revolt of 1857</div>
-          <p class="card-text">
-            The family's documented participation in the First War of Independence placed them among
-            the earliest organized resistors against British colonial rule.
-          </p>
-        </div>
-        <div class="card">
-          <div class="card-title">Non-Cooperation Movement</div>
-          <p class="card-text">
-            Following Gandhi's call in 1920, family members surrendered colonial titles,
-            boycotted British goods, and courted arrest alongside thousands of compatriots.
-          </p>
-        </div>
-        <div class="card">
-          <div class="card-title">Civil Disobedience</div>
-          <p class="card-text">
-            The Salt March of 1930 saw two family members march alongside the Mahatma,
-            symbolizing the family's commitment to non-violent resistance at great personal cost.
-          </p>
-        </div>
-        <div class="card">
-          <div class="card-title">Quit India Movement</div>
-          <p class="card-text">
-            August 1942: three members of the family were imprisoned by British authorities
-            for distributing leaflets and organising underground press operations.
-          </p>
-        </div>
-        <div class="card">
-          <div class="card-title">Underground Press & Intelligence</div>
-          <p class="card-text">
-            Operating a clandestine printing press, the family disseminated revolutionary pamphlets
-            across multiple districts, evading colonial surveillance for four years.
-          </p>
-        </div>
-        <div class="card">
-          <div class="card-title">Dawn of Independence — 1947</div>
-          <p class="card-text">
-            On the 15th of August 1947, as Nehru's voice rang through All India Radio,
-            the family gathered under a hand-sewn tricolour they had hidden through the occupation.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="ornament-divider" aria-hidden="true">
-    <svg width="24" height="24" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#C9A84C" stroke-width="3" opacity="0.5"/><circle cx="50" cy="50" r="6" fill="#C9A84C" opacity="0.5"/></svg>
-  </div>
-
-  <!-- ── LINEAGE ────────────────────────────────────── -->
-  <section id="lineage" class="section reveal">
-    <div class="section-label">Vanshavali</div>
-    <h2 class="section-title">The Lineage</h2>
-    <p class="section-subtitle">A dynasty of duty across seven generations</p>
-
-    <div class="timeline" role="list">
-
-      <div class="timeline-item" role="listitem">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-year">1830s – 1860s</div>
-        <div class="timeline-heading">Founding Patriarch</div>
-        <p class="timeline-text">
-          The great-great-great grandfather established the family's political consciousness,
-          participating in regional councils and becoming a local voice against unjust taxation
-          levied by the East India Company.
+        <p
+          style="font-family:'EB Garamond',serif;font-size:clamp(1rem,1.6vw,1.18rem);color:rgba(250,243,224,0.78);line-height:1.85;max-width:800px;">
+          The story of this family is inseparable from the story of India itself. For nearly two centuries,
+          each generation has stepped forward when the motherland called - offering their voices, their freedoms,
+          and sometimes their lives in service of the dream of a free and unified Bharat.
         </p>
-      </div>
 
-      <div class="timeline-item" role="listitem">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-year">1880s – 1920s</div>
-        <div class="timeline-heading">The Congress Generation</div>
-        <p class="timeline-text">
-          The second and third generations joined the Indian National Congress at its founding stages,
-          contributing financial resources, legal counsel, and organisational leadership to
-          the early independence movement.
-        </p>
-      </div>
+        <div class="quote-block" style="max-width:760px;margin-top:40px;">
+          <p class="quote-text">
+            "They did not merely witness history. They were its architects, its price, and its promise."
+          </p>
+          <span class="quote-attr">- Family Inscription, 1947</span>
+        </div>
 
-      <div class="timeline-item" role="listitem">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-year">1920s – 1947</div>
-        <div class="timeline-heading">The Satyagrahis</div>
-        <p class="timeline-text">
-          Two members of the fourth generation served multiple prison terms under the British Raj.
-          One died in custody; the other emerged in 1945 to witness, and celebrate, the final push toward independence.
-        </p>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">
+              <img src="Bharatiya_Janata_Party_(icon).svg" alt="Lotus" width="48" height="48">
+            </div>
+            <div class="card-title">Rooted in the Tradition</div>
+            <p class="card-text">
+              Like the lotus that blooms unstained from the mud, this family rose through colonial oppression
+              to bear the flower of independence.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <img src="Emblem_of_India.svg" alt="Lion" width="48" height="48">
+            </div>
+            <div class="card-title">The Lion Capital's Resolve</div>
+            <p class="card-text">
+              Embodying the four lions of Ashoka's capital - vigilance, strength, pride, and unity -
+              they stood undivided through every trial.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <img src="Ashoka_Chakra.svg" alt="Dharma Wheel" width="48" height="48">
+            </div>
+            <div class="card-title">The Wheel of Dharma</div>
+            <p class="card-text">
+              Guided by the Ashoka Chakra's twenty-four spokes - each a virtue, each a duty -
+              their political work was always in service of a higher law.
+            </p>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="timeline-item" role="listitem">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-year">1947 – 1980s</div>
-        <div class="timeline-heading">Nation Builders</div>
-        <p class="timeline-text">
-          Post-independence, the fifth generation transitioned from resistance to reconstruction —
-          serving in state legislatures, contributing to land reform legislation, and
-          championing rural education.
-        </p>
-      </div>
-
-      <div class="timeline-item" role="listitem">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-year">1990s – Present</div>
-        <div class="timeline-heading">Contemporary Leadership</div>
-        <p class="timeline-text">
-          The present generation carries the mantle forward — fighting for constitutional values,
-          inclusive governance, and the protection of the democratic ideals so dearly purchased
-          by their forebears.
-        </p>
-      </div>
-
+    <div class="ornament-divider" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#C9A84C" stroke-width="3" opacity="0.5" />
+        <circle cx="50" cy="50" r="6" fill="#C9A84C" opacity="0.5" />
+      </svg>
     </div>
-  </section>
 
-  <!-- ── VALUES ────────────────────────────────────── -->
-  <section id="values" class="section-full section-bg-blue">
-    <div class="section reveal">
-      <div class="section-label">Adarsh</div>
-      <h2 class="section-title">Enduring Values</h2>
-      <p class="section-subtitle">The philosophy that has guided every generation</p>
+    <!-- ── FREEDOM MOVEMENT ───────────────────────────── -->
+    <section id="freedom" class="section-full section-bg-green">
+      <div class="section reveal">
+        <div class="section-label">Itihas</div>
+        <h2 class="section-title">Freedom Movement</h2>
+        <p class="section-subtitle">The battles they fought so we could be free</p>
 
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-icon" style="color:var(--saffron);">🕉</div>
-          <div class="card-title">Satya — Truth</div>
-          <p class="card-text">Unwavering commitment to truth in public life, modelled on the Gandhian principle that political power must rest on moral foundations.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon" style="color:white;">☮️</div>
-          <div class="card-title">Ahimsa — Non-Violence</div>
-          <p class="card-text">The pen, the ballot, the peaceful march — not the sword. A tradition of democratic resistance that has never compromised on non-violence.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon" style="color:var(--india-green);">🌿</div>
-          <div class="card-title">Seva — Service</div>
-          <p class="card-text">Public office is not a throne but a responsibility. Every family member in politics has held service to the common citizen as their highest obligation.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon" style="color:var(--gold);">⚖️</div>
-          <div class="card-title">Nyaya — Justice</div>
-          <p class="card-text">From land reforms to legal aid, the family has been a consistent advocate for the rights of the marginalised, the landless, and the voiceless.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon" style="color:var(--chakra-blue);">🤝</div>
-          <div class="card-title">Ekta — Unity</div>
-          <p class="card-text">Across caste, religion, and language — the family's politics has always been one of inclusion, mirroring the pluralism of India itself.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon" style="color:var(--saffron);">📚</div>
-          <div class="card-title">Gyan — Knowledge</div>
-          <p class="card-text">Believing education to be the foundation of freedom, every generation has championed universal literacy, founding schools and scholarships.</p>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-title">Revolt of 1857</div>
+            <p class="card-text">
+              The family's documented participation in the First War of Independence placed them among
+              the earliest organized resistors against British colonial rule.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-title">Non-Cooperation Movement</div>
+            <p class="card-text">
+              Following Gandhi's call in 1920, family members surrendered colonial titles,
+              boycotted British goods, and courted arrest alongside thousands of compatriots.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-title">Civil Disobedience</div>
+            <p class="card-text">
+              The Salt March of 1930 saw two family members march alongside the Mahatma,
+              symbolizing the family's commitment to non-violent resistance at great personal cost.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-title">Quit India Movement</div>
+            <p class="card-text">
+              August 1942: three members of the family were imprisoned by British authorities
+              for distributing leaflets and organising underground press operations.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-title">Underground Press & Intelligence</div>
+            <p class="card-text">
+              Operating a clandestine printing press, the family disseminated revolutionary pamphlets
+              across multiple districts, evading colonial surveillance for four years.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-title">Dawn of Independence - 1947</div>
+            <p class="card-text">
+              On the 15th of August 1947, as Nehru's voice rang through All India Radio,
+              the family gathered under a hand-sewn tricolour they had hidden through the occupation.
+            </p>
+          </div>
         </div>
       </div>
+    </section>
+
+    <div class="ornament-divider" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#C9A84C" stroke-width="3" opacity="0.5" />
+        <circle cx="50" cy="50" r="6" fill="#C9A84C" opacity="0.5" />
+      </svg>
     </div>
-  </section>
 
-  <!-- ── SYMBOLS ───────────────────────────────────── -->
-  <section id="symbols" class="section reveal">
-    <div class="section-label">Chinh</div>
-    <h2 class="section-title">Sacred Symbols</h2>
-    <p class="section-subtitle">The icons that define a heritage</p>
-
-    <div class="card-grid">
-      <div class="card" style="text-align:center;">
-        <!-- Lotus SVG -->
-        <svg viewBox="0 0 120 100" width="80" height="67" style="margin:0 auto 16px;display:block;" aria-label="Lotus">
-          <ellipse cx="60" cy="75" rx="30" ry="10" fill="rgba(255,153,51,0.15)" stroke="#FF9933" stroke-width="1"/>
-          <path d="M60 70 C50 50 30 45 25 30 C35 38 50 40 60 30 C70 40 85 38 95 30 C90 45 70 50 60 70Z" fill="rgba(255,153,51,0.25)" stroke="#FF9933" stroke-width="1.5"/>
-          <path d="M60 70 C55 55 40 50 38 38 C46 44 55 45 60 36 C65 45 74 44 82 38 C80 50 65 55 60 70Z" fill="rgba(255,153,51,0.35)" stroke="#FF9933" stroke-width="1.5"/>
-          <path d="M60 68 C57 58 52 53 50 46 C54 50 58 50 60 44 C62 50 66 50 70 46 C68 53 63 58 60 68Z" fill="rgba(255,153,51,0.55)" stroke="#FF9933" stroke-width="1.5"/>
-          <circle cx="60" cy="42" r="5" fill="#FF9933" opacity="0.8"/>
-          <line x1="60" y1="68" x2="60" y2="80" stroke="#138808" stroke-width="2"/>
-        </svg>
-        <div class="card-title">The Lotus — Padma</div>
-        <p class="card-text">Rising pure through adversity, the lotus is the emblem of spiritual and political awakening — the soul of India's renaissance.</p>
-      </div>
-
-      <div class="card" style="text-align:center;">
-        <!-- Lion Capital SVG -->
-        <svg viewBox="0 0 120 110" width="80" height="73" style="margin:0 auto 16px;display:block;" aria-label="Lion Capital">
-          <rect x="30" y="85" width="60" height="12" rx="2" fill="rgba(201,168,76,0.3)" stroke="#C9A84C" stroke-width="1.5"/>
-          <circle cx="60" cy="65" r="15" fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0.6"/>
-          <!-- Simplified lion heads -->
-          <ellipse cx="35" cy="50" rx="12" ry="10" fill="rgba(201,168,76,0.2)" stroke="#C9A84C" stroke-width="1.5"/>
-          <ellipse cx="85" cy="50" rx="12" ry="10" fill="rgba(201,168,76,0.2)" stroke="#C9A84C" stroke-width="1.5"/>
-          <ellipse cx="60" cy="38" rx="12" ry="10" fill="rgba(201,168,76,0.3)" stroke="#C9A84C" stroke-width="1.5"/>
-          <!-- Crown/mane -->
-          <path d="M28 44 Q35 32 42 44" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
-          <path d="M78 44 Q85 32 92 44" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
-          <path d="M53 30 Q60 18 67 30" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
-          <!-- Eyes -->
-          <circle cx="31" cy="48" r="1.5" fill="#C9A84C"/>
-          <circle cx="81" cy="48" r="1.5" fill="#C9A84C"/>
-          <circle cx="57" cy="36" r="1.5" fill="#C9A84C"/>
-        </svg>
-        <div class="card-title">Lion Capital — Simha Stambha</div>
-        <p class="card-text">Emperor Ashoka's crowning symbol: four lions facing four directions, proclaiming that India's dharma knows no boundary.</p>
-      </div>
-
-      <div class="card" style="text-align:center;">
-        <!-- Ashoka Chakra SVG -->
-        <svg viewBox="0 0 120 120" width="73" height="73" style="margin:0 auto 16px;display:block;" aria-label="Ashoka Chakra">
-          <circle cx="60" cy="60" r="50" fill="none" stroke="#1A3C8F" stroke-width="3"/>
-          <circle cx="60" cy="60" r="8" fill="#1A3C8F"/>
-          <circle cx="60" cy="60" r="4" fill="#0D0A06"/>
-          <g stroke="#1A3C8F" stroke-width="1.6">
-            <line x1="60" y1="10" x2="60" y2="52"/>
-            <line x1="60" y1="68" x2="60" y2="110"/>
-            <line x1="78.5" y1="14.5" x2="65.6" y2="53.5"/>
-            <line x1="54.4" y1="66.5" x2="41.5" y2="105.5"/>
-            <line x1="93.9" y1="27.5" x2="70.4" y2="56.5"/>
-            <line x1="49.6" y1="63.5" x2="26.1" y2="92.5"/>
-            <line x1="103.5" y1="44.7" x2="73.1" y2="60.1"/>
-            <line x1="46.9" y1="59.9" x2="16.5" y2="75.3"/>
-            <line x1="110" y1="60" x2="68" y2="60"/>
-            <line x1="52" y1="60" x2="10" y2="60"/>
-            <line x1="103.5" y1="75.3" x2="73.1" y2="59.9"/>
-            <line x1="46.9" y1="60.1" x2="16.5" y2="44.7"/>
-            <line x1="93.9" y1="92.5" x2="70.4" y2="63.5"/>
-            <line x1="49.6" y1="56.5" x2="26.1" y2="27.5"/>
-            <line x1="78.5" y1="105.5" x2="65.6" y2="66.5"/>
-            <line x1="54.4" y1="53.5" x2="41.5" y2="14.5"/>
-            <line x1="41.5" y1="14.5" x2="54.4" y2="53.5"/>
-            <line x1="65.6" y1="66.5" x2="78.5" y2="105.5"/>
-            <line x1="26.1" y1="27.5" x2="49.6" y2="56.5"/>
-            <line x1="70.4" y1="63.5" x2="93.9" y2="92.5"/>
-            <line x1="16.5" y1="44.7" x2="46.9" y2="60.1"/>
-            <line x1="73.1" y1="59.9" x2="103.5" y2="75.3"/>
-            <line x1="10" y1="60" x2="52" y2="60"/>
-            <line x1="68" y1="60" x2="110" y2="60"/>
-          </g>
-        </svg>
-        <div class="card-title">Ashoka Chakra — Wheel of Dharma</div>
-        <p class="card-text">Twenty-four spokes for twenty-four virtues. The wheel that stopped Britain's conquest of India's spirit, placed at the centre of our national flag.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── TIMELINE ──────────────────────────────────── -->
-  <section id="timeline" class="section-full section-bg-saffron">
-    <div class="section reveal">
-      <div class="section-label">Kaalakram</div>
-      <h2 class="section-title">Historical Timeline</h2>
-      <p class="section-subtitle">Key moments in a century-long journey</p>
+    <!-- ── LINEAGE ────────────────────────────────────── -->
+    <section id="lineage" class="section reveal">
+      <div class="section-label">Vanshavali</div>
+      <h2 class="section-title">The Lineage</h2>
+      <p class="section-subtitle">A dynasty of duty across seven generations</p>
 
       <div class="timeline" role="list">
+
         <div class="timeline-item" role="listitem">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">1857</div>
-          <div class="timeline-heading">The First Spark</div>
-          <p class="timeline-text">The Sepoy Mutiny ignites a century of organised resistance. The family patriarch joins local militias, beginning a multigenerational commitment.</p>
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">1830s – 1860s</div>
+          <div class="timeline-heading">Founding Patriarch</div>
+          <p class="timeline-text">
+            The great-great-great grandfather established the family's political consciousness,
+            participating in regional councils and becoming a local voice against unjust taxation
+            levied by the East India Company.
+          </p>
         </div>
+
         <div class="timeline-item" role="listitem">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">1885</div>
-          <div class="timeline-heading">Indian National Congress Founded</div>
-          <p class="timeline-text">The family joins the nascent Congress movement, offering legal expertise and regional political networks.</p>
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">1880s – 1920s</div>
+          <div class="timeline-heading">The Congress Generation</div>
+          <p class="timeline-text">
+            The second and third generations joined the Indian National Congress at its founding stages,
+            contributing financial resources, legal counsel, and organisational leadership to
+            the early independence movement.
+          </p>
         </div>
+
         <div class="timeline-item" role="listitem">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">1919</div>
-          <div class="timeline-heading">Jallianwala Bagh — A Turning Point</div>
-          <p class="timeline-text">The Amritsar massacre radicalises the family's stance. The moderate approach is abandoned; full independence becomes the only acceptable goal.</p>
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">1920s – 1947</div>
+          <div class="timeline-heading">The Satyagrahis</div>
+          <p class="timeline-text">
+            Two members of the fourth generation served multiple prison terms under the British Raj.
+            One died in custody; the other emerged in 1945 to witness, and celebrate, the final push toward
+            independence.
+          </p>
         </div>
+
         <div class="timeline-item" role="listitem">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">1930</div>
-          <div class="timeline-heading">Salt March Participation</div>
-          <p class="timeline-text">Two family members walk with Gandhi from Sabarmati to Dandi, a 24-day act of defiance that shook the empire.</p>
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">1947 – 1980s</div>
+          <div class="timeline-heading">Nation Builders</div>
+          <p class="timeline-text">
+            Post-independence, the fifth generation transitioned from resistance to reconstruction -
+            serving in state legislatures, contributing to land reform legislation, and
+            championing rural education.
+          </p>
         </div>
+
         <div class="timeline-item" role="listitem">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">1942</div>
-          <div class="timeline-heading">Quit India — Imprisoned</div>
-          <p class="timeline-text">Three members imprisoned under the Defence of India Rules. The family home is searched and documents confiscated.</p>
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">1990s – Present</div>
+          <div class="timeline-heading">Contemporary Leadership</div>
+          <p class="timeline-text">
+            The present generation carries the mantle forward - fighting for constitutional values,
+            inclusive governance, and the protection of the democratic ideals so dearly purchased
+            by their forebears.
+          </p>
         </div>
-        <div class="timeline-item" role="listitem">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">1947</div>
-          <div class="timeline-heading">Swaraj Achieved</div>
-          <p class="timeline-text">Independence at midnight. The family's sacrifices become part of the national story. The work of nation-building begins.</p>
-        </div>
-        <div class="timeline-item" role="listitem">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">Present</div>
-          <div class="timeline-heading">Continuing the Mission</div>
-          <p class="timeline-text">The seventh generation stands for election, carries the family's torch, and fights to protect the democracy their ancestors bled for.</p>
+
+      </div>
+    </section>
+
+    <!-- ── VALUES ────────────────────────────────────── -->
+    <section id="values" class="section-full section-bg-blue">
+      <div class="section reveal">
+        <div class="section-label">Adarsh</div>
+        <h2 class="section-title">Enduring Values</h2>
+        <p class="section-subtitle">The philosophy that has guided every generation</p>
+
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">
+              <img src="om.png" alt="Om" width="48" height="48">
+            </div>
+            <div class="card-title">Satya - Truth</div>
+            <p class="card-text">Unwavering commitment to truth in public life, modelled on the Gandhian principle that
+              political power must rest on moral foundations.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <img src="peace.png" alt="Peace" width="48" height="48">
+            </div>
+            <div class="card-title">Ahimsa - Non-Violence</div>
+            <p class="card-text">The pen, the ballot, the peaceful march - not the sword. A tradition of democratic
+              resistance that has never compromised on non-violence.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <img src="helpinghands.png" alt="Service" width="48" height="48">
+            </div>
+            <div class="card-title">Seva - Service</div>
+            <p class="card-text">Public office is not a throne but a responsibility. Every family member in politics has
+              held service to the common citizen as their highest obligation.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <img src="justice.png" alt="Justice" width="48" height="48">
+            </div>
+            <div class="card-title">Nyaya - Justice</div>
+            <p class="card-text">From land reforms to legal aid, the family has been a consistent advocate for the
+              rights of the marginalised, the landless, and the voiceless.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <img src="unity.png" alt="Unity" width="48" height="48">
+            </div>
+            <div class="card-title">Ekta - Unity</div>
+            <p class="card-text">Across caste, religion, and language - the family's politics has always been one of
+              inclusion, mirroring the pluralism of India itself.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <img src="knowledge.png" alt="Knowledge" width="48" height="48">
+            </div>
+            <div class="card-title">Gyan - Knowledge</div>
+            <p class="card-text">Believing education to be the foundation of freedom, every generation has championed
+              universal literacy, founding schools and scholarships.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── VISION ─────────────────────────────────── -->
-  <section id="vision" class="section reveal">
-    <div class="section-label">Drishtikon</div>
-    <h2 class="section-title">The Vision Forward</h2>
-    <p class="section-subtitle">What we stand for today</p>
+    <!-- ── SYMBOLS ───────────────────────────────────── -->
+    <section id="symbols" class="section reveal">
+      <div class="section-label">Chinh</div>
+      <h2 class="section-title">Sacred Symbols</h2>
+      <p class="section-subtitle">The icons that define a heritage</p>
 
-    <div class="quote-block">
-      <p class="quote-text">
-        "A nation that forgets its freedom fighters forgets itself. We remember so that we may continue."
+      <div class="card-grid">
+        <div class="card" style="text-align:center;">
+          <div class="card-icon">
+            <img src="Bharatiya_Janata_Party_(icon).svg" alt="Lotus" width="64" height="64">
+          </div>
+          <div class="card-title">The Lotus - Padma</div>
+          <p class="card-text">Rising pure through adversity, the lotus is the emblem of spiritual and political
+            awakening - the soul of India's renaissance.</p>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div class="card-icon">
+            <img src="Emblem_of_India.svg" alt="Lion Capital" width="64" height="64">
+          </div>
+          <div class="card-title">Lion Capital - Simha Stambha</div>
+          <p class="card-text">Emperor Ashoka's crowning symbol: four lions facing four directions, proclaiming that
+            India's dharma knows no boundary.</p>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div class="card-icon">
+            <img src="Ashoka_Chakra.svg" alt="Ashoka Chakra" width="64" height="64">
+          </div>
+          </svg>
+          <div class="card-title">Ashoka Chakra - Wheel of Dharma</div>
+          <p class="card-text">Twenty-four spokes for twenty-four virtues. The wheel that stopped Britain's conquest of
+            India's spirit, placed at the centre of our national flag.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TIMELINE ──────────────────────────────────── -->
+    <section id="timeline" class="section-full section-bg-saffron">
+      <div class="section reveal">
+        <div class="section-label">Kaalakram</div>
+        <h2 class="section-title">Historical Timeline</h2>
+        <p class="section-subtitle">Key moments in a century-long journey</p>
+
+        <div class="timeline" role="list">
+          <div class="timeline-item" role="listitem">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">1857</div>
+            <div class="timeline-heading">The First Spark</div>
+            <p class="timeline-text">The Sepoy Mutiny ignites a century of organised resistance. The family patriarch
+              joins local militias, beginning a multigenerational commitment.</p>
+          </div>
+          <div class="timeline-item" role="listitem">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">1885</div>
+            <div class="timeline-heading">Indian National Congress Founded</div>
+            <p class="timeline-text">The family joins the nascent Congress movement, offering legal expertise and
+              regional political networks.</p>
+          </div>
+          <div class="timeline-item" role="listitem">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">1919</div>
+            <div class="timeline-heading">Jallianwala Bagh - A Turning Point</div>
+            <p class="timeline-text">The Amritsar massacre radicalises the family's stance. The moderate approach is
+              abandoned; full independence becomes the only acceptable goal.</p>
+          </div>
+          <div class="timeline-item" role="listitem">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">1930</div>
+            <div class="timeline-heading">Salt March Participation</div>
+            <p class="timeline-text">Two family members walk with Gandhi from Sabarmati to Dandi, a 24-day act of
+              defiance that shook the empire.</p>
+          </div>
+          <div class="timeline-item" role="listitem">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">1942</div>
+            <div class="timeline-heading">Quit India - Imprisoned</div>
+            <p class="timeline-text">Three members imprisoned under the Defence of India Rules. The family home is
+              searched and documents confiscated.</p>
+          </div>
+          <div class="timeline-item" role="listitem">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">1947</div>
+            <div class="timeline-heading">Swaraj Achieved</div>
+            <p class="timeline-text">Independence at midnight. The family's sacrifices become part of the national
+              story. The work of nation-building begins.</p>
+          </div>
+          <div class="timeline-item" role="listitem">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">Present</div>
+            <div class="timeline-heading">Continuing the Mission</div>
+            <p class="timeline-text">The seventh generation stands for election, carries the family's torch, and fights
+              to protect the democracy their ancestors bled for.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VISION ─────────────────────────────────── -->
+    <section id="vision" class="section reveal">
+      <div class="section-label">Drishtikon</div>
+      <h2 class="section-title">The Vision Forward</h2>
+      <p class="section-subtitle">What we stand for today</p>
+
+      <div class="quote-block">
+        <p class="quote-text">
+          "A nation that forgets its freedom fighters forgets itself. We remember so that we may continue."
+        </p>
+        <span class="quote-attr">- Current Generation</span>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">Constitutional Democracy</div>
+          <p class="card-text">Protecting the Constitution of India - Dr. Ambedkar's gift - from all who would weaken
+            its secular, democratic foundations.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Rural Development</div>
+          <p class="card-text">The independence dream was for every Indian, not just the cities. Sustained focus on
+            agricultural reform, irrigation, and rural infrastructure.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Education for All</div>
+          <p class="card-text">Universal, quality public education from village to university - the single greatest
+            investment a free nation can make in itself.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTACT ────────────────────────────────── -->
+    <section id="contact" class="section reveal"
+      style="text-align:center;max-width:700px;margin-left:auto;margin-right:auto;">
+      <div class="section-label" style="justify-content:center;">Sampark</div>
+      <h2 class="section-title">Connect with the Movement</h2>
+      <p class="section-subtitle">Join the continuing legacy of service</p>
+
+      <p
+        style="font-family:'EB Garamond',serif;font-size:1.05rem;color:rgba(250,243,224,0.7);line-height:1.8;margin-bottom:36px;">
+        Whether you are a researcher, a citizen, or a fellow traveller in the cause of democratic India -
+        this history belongs to all of us.
       </p>
-      <span class="quote-attr">— Current Generation</span>
-    </div>
 
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-title">Constitutional Democracy</div>
-        <p class="card-text">Protecting the Constitution of India — Dr. Ambedkar's gift — from all who would weaken its secular, democratic foundations.</p>
-      </div>
-      <div class="card">
-        <div class="card-title">Rural Development</div>
-        <p class="card-text">The independence dream was for every Indian, not just the cities. Sustained focus on agricultural reform, irrigation, and rural infrastructure.</p>
-      </div>
-      <div class="card">
-        <div class="card-title">Education for All</div>
-        <p class="card-text">Universal, quality public education from village to university — the single greatest investment a free nation can make in itself.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CONTACT ────────────────────────────────── -->
-  <section id="contact" class="section reveal" style="text-align:center;max-width:700px;margin-left:auto;margin-right:auto;">
-    <div class="section-label" style="justify-content:center;">Sampark</div>
-    <h2 class="section-title">Connect with the Movement</h2>
-    <p class="section-subtitle">Join the continuing legacy of service</p>
-
-    <p style="font-family:'EB Garamond',serif;font-size:1.05rem;color:rgba(250,243,224,0.7);line-height:1.8;margin-bottom:36px;">
-      Whether you are a researcher, a citizen, or a fellow traveller in the cause of democratic India —
-      this history belongs to all of us.
-    </p>
-
-    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-      <a href="mailto:contact@legacy.in" style="
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+        <a href="mailto:contact@legacy.in" style="
         font-family:'Cinzel',serif;
         font-size:0.78rem;
         letter-spacing:0.15em;
@@ -1178,9 +1293,9 @@ footer {
         transition:all 0.25s;
         display:inline-block;
       " onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">
-        Write to Us
-      </a>
-      <a href="#legacy" style="
+          Write to Us
+        </a>
+        <a href="#legacy" style="
         font-family:'Cinzel',serif;
         font-size:0.78rem;
         letter-spacing:0.15em;
@@ -1194,418 +1309,441 @@ footer {
         transition:all 0.25s;
         display:inline-block;
       " onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.4)'">
-        Read the Legacy
-      </a>
+          Read the Legacy
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ──────────────────────────────────────────── -->
+  <footer>
+    <svg class="footer-chakra" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="44" fill="none" stroke="#C9A84C" stroke-width="2" />
+      <circle cx="50" cy="50" r="6" fill="#C9A84C" />
+      <g stroke="#C9A84C" stroke-width="1.2" opacity="0.7">
+        <line x1="50" y1="6" x2="50" y2="44" />
+        <line x1="50" y1="56" x2="50" y2="94" />
+        <line x1="78" y1="15" x2="62" y2="46" />
+        <line x1="38" y1="54" x2="22" y2="85" />
+        <line x1="94" y1="50" x2="56" y2="50" />
+        <line x1="44" y1="50" x2="6" y2="50" />
+        <line x1="78" y1="85" x2="62" y2="54" />
+        <line x1="38" y1="46" x2="22" y2="15" />
+      </g>
+    </svg>
+    <p class="footer-text">
+      Dedicated to the memory of all who gave their tomorrows for our today.<br />
+      जय हिन्द · Jai Hind
+    </p>
+    <div class="footer-tricolor" aria-label="Indian tricolour">
+      <span style="background:var(--saffron)"></span>
+      <span style="background:white"></span>
+      <span style="background:var(--india-green)"></span>
     </div>
-  </section>
+  </footer>
 
-</main>
-
-<!-- ── FOOTER ──────────────────────────────────────────── -->
-<footer>
-  <svg class="footer-chakra" viewBox="0 0 100 100" aria-hidden="true">
-    <circle cx="50" cy="50" r="44" fill="none" stroke="#C9A84C" stroke-width="2"/>
-    <circle cx="50" cy="50" r="6" fill="#C9A84C"/>
-    <g stroke="#C9A84C" stroke-width="1.2" opacity="0.7">
-      <line x1="50" y1="6" x2="50" y2="44"/><line x1="50" y1="56" x2="50" y2="94"/>
-      <line x1="78" y1="15" x2="62" y2="46"/><line x1="38" y1="54" x2="22" y2="85"/>
-      <line x1="94" y1="50" x2="56" y2="50"/><line x1="44" y1="50" x2="6" y2="50"/>
-      <line x1="78" y1="85" x2="62" y2="54"/><line x1="38" y1="46" x2="22" y2="15"/>
-    </g>
-  </svg>
-  <p class="footer-text">
-    Dedicated to the memory of all who gave their tomorrows for our today.<br/>
-    जय हिन्द · Jai Hind
-  </p>
-  <div class="footer-tricolor" aria-label="Indian tricolour">
-    <span style="background:var(--saffron)"></span>
-    <span style="background:white"></span>
-    <span style="background:var(--india-green)"></span>
-  </div>
-</footer>
-
-<!-- ══════════════════════════════════════════════════════
-     THREE.JS — Interactive 3D Background
+  <!-- ══════════════════════════════════════════════════════
+     THREE.JS - Interactive 3D Background
      Lotus petals + Chakra spokes + Lion particles
      respond to pointer position in real time
 ════════════════════════════════════════════════════════════ -->
-<script>
-(function () {
-  'use strict';
+  <script>
+    (function () {
+      'use strict';
 
-  /* ── Scene Setup ─────────────────────────────────────── */
-  const canvas = document.getElementById('three-canvas');
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-  });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 0);
+      /* ── Scene Setup ─────────────────────────────────────── */
+      const canvas = document.getElementById('three-canvas');
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0);
 
-  const scene = new THREE.Scene();
+      const scene = new THREE.Scene();
 
-  /* ── Responsive Camera ───────────────────────────────── */
-  function getScale() {
-    const w = window.innerWidth;
-    if (w < 480)  return 0.45;
-    if (w < 768)  return 0.65;
-    if (w < 1024) return 0.82;
-    return 1.0;
-  }
-
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
-  camera.position.set(0, 0, 14);
-
-  /* ── Pointer (normalised -1..1) ─────────────────────── */
-  const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
-
-  window.addEventListener('mousemove', e => {
-    pointer.tx = (e.clientX / window.innerWidth)  * 2 - 1;
-    pointer.ty = -(e.clientY / window.innerHeight) * 2 + 1;
-  });
-
-  window.addEventListener('touchmove', e => {
-    if (!e.touches.length) return;
-    const t = e.touches[0];
-    pointer.tx = (t.clientX / window.innerWidth)  * 2 - 1;
-    pointer.ty = -(t.clientY / window.innerHeight) * 2 + 1;
-  }, { passive: true });
-
-  /* ── Colours ─────────────────────────────────────────── */
-  const COL_SAFFRON = new THREE.Color(0xFF9933);
-  const COL_WHITE   = new THREE.Color(0xFFFFFF);
-  const COL_GREEN   = new THREE.Color(0x138808);
-  const COL_GOLD    = new THREE.Color(0xC9A84C);
-  const COL_BLUE    = new THREE.Color(0x1A3C8F);
-  const COL_GOLDL   = new THREE.Color(0xF0D080);
-
-  /* ────────────────────────────────────────────────────────
-     1. LOTUS — Layered petal rings
-  ──────────────────────────────────────────────────────── */
-  const lotusGroup = new THREE.Group();
-  scene.add(lotusGroup);
-
-  function makePetal(radiusX, radiusY, petalCount, yOffset, color, opacity, tilt) {
-    const group = new THREE.Group();
-    group.position.y = yOffset;
-    const shape = new THREE.Shape();
-    shape.moveTo(0, 0);
-    shape.bezierCurveTo(-radiusX * 0.4, radiusY * 0.4, -radiusX * 0.4, radiusY, 0, radiusY);
-    shape.bezierCurveTo( radiusX * 0.4, radiusY,  radiusX * 0.4, radiusY * 0.4, 0, 0);
-
-    const geo = new THREE.ShapeGeometry(shape, 20);
-    const mat = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-    });
-
-    for (let i = 0; i < petalCount; i++) {
-      const mesh = new THREE.Mesh(geo, mat.clone());
-      mesh.rotation.z = (i / petalCount) * Math.PI * 2;
-      mesh.rotation.x = tilt;
-      group.add(mesh);
-    }
-    return group;
-  }
-
-  // Layer 1 — outermost, saffron, spread
-  const lotus1 = makePetal(0.45, 2.8, 12, -0.2, COL_SAFFRON, 0.18, 0.55);
-  // Layer 2 — mid, warm gold
-  const lotus2 = makePetal(0.35, 2.0, 10, 0.0, COL_GOLD,    0.22, 0.4);
-  // Layer 3 — inner, bright gold
-  const lotus3 = makePetal(0.28, 1.3, 8,  0.2, COL_GOLDL,   0.30, 0.25);
-  // Centre bud
-  const budGeo = new THREE.SphereGeometry(0.22, 16, 16);
-  const budMat = new THREE.MeshBasicMaterial({ color: COL_SAFFRON, transparent: true, opacity: 0.8 });
-  const bud    = new THREE.Mesh(budGeo, budMat);
-
-  lotusGroup.add(lotus1, lotus2, lotus3, bud);
-  lotusGroup.position.set(0, 0, 0);
-
-  /* ────────────────────────────────────────────────────────
-     2. ASHOKA CHAKRA — Spoke wheel
-  ──────────────────────────────────────────────────────── */
-  const chakraGroup = new THREE.Group();
-  scene.add(chakraGroup);
-
-  // Outer rim
-  const rimGeo = new THREE.TorusGeometry(4.2, 0.045, 12, 120);
-  const rimMat = new THREE.MeshBasicMaterial({ color: COL_BLUE, transparent: true, opacity: 0.55 });
-  const rim    = new THREE.Mesh(rimGeo, rimMat);
-  chakraGroup.add(rim);
-
-  // Inner rim
-  const innerRimGeo = new THREE.TorusGeometry(3.6, 0.025, 8, 100);
-  const innerRimMat = new THREE.MeshBasicMaterial({ color: COL_BLUE, transparent: true, opacity: 0.3 });
-  chakraGroup.add(new THREE.Mesh(innerRimGeo, innerRimMat));
-
-  // 24 spokes
-  const spokeMat = new THREE.LineBasicMaterial({ color: COL_BLUE, transparent: true, opacity: 0.5 });
-  for (let i = 0; i < 24; i++) {
-    const angle = (i / 24) * Math.PI * 2;
-    const pts = [
-      new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(Math.cos(angle) * 4.2, Math.sin(angle) * 4.2, 0),
-    ];
-    const geo = new THREE.BufferGeometry().setFromPoints(pts);
-    chakraGroup.add(new THREE.Line(geo, spokeMat));
-  }
-
-  // Hub
-  const hubGeo = new THREE.CircleGeometry(0.18, 24);
-  const hubMat = new THREE.MeshBasicMaterial({ color: COL_BLUE, transparent: true, opacity: 0.7 });
-  chakraGroup.add(new THREE.Mesh(hubGeo, hubMat));
-
-  chakraGroup.position.set(0, 0, -1);
-
-  /* ────────────────────────────────────────────────────────
-     3. PARTICLE FIELD — tricolour dust
-  ──────────────────────────────────────────────────────── */
-  const PARTICLE_COUNT = 380;
-  const positions = new Float32Array(PARTICLE_COUNT * 3);
-  const colors    = new Float32Array(PARTICLE_COUNT * 3);
-  const sizes     = new Float32Array(PARTICLE_COUNT);
-  const velocities = [];
-
-  const triColors = [COL_SAFFRON, COL_WHITE, COL_GREEN, COL_GOLD];
-
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const r   = 3.5 + Math.random() * 8;
-    const phi = Math.random() * Math.PI * 2;
-    const th  = (Math.random() - 0.5) * Math.PI * 0.6;
-
-    positions[i * 3]     = r * Math.cos(phi) * Math.cos(th);
-    positions[i * 3 + 1] = r * Math.sin(th);
-    positions[i * 3 + 2] = r * Math.sin(phi) * Math.cos(th) * 0.5;
-
-    const c = triColors[Math.floor(Math.random() * triColors.length)];
-    colors[i * 3]     = c.r;
-    colors[i * 3 + 1] = c.g;
-    colors[i * 3 + 2] = c.b;
-
-    sizes[i] = 0.04 + Math.random() * 0.1;
-
-    velocities.push({
-      phi: (Math.random() - 0.5) * 0.003,
-      th:  (Math.random() - 0.5) * 0.001,
-      r:   r,
-    });
-  }
-
-  const particleGeo = new THREE.BufferGeometry();
-  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  particleGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
-  particleGeo.setAttribute('size',     new THREE.BufferAttribute(sizes, 1));
-
-  const particleMat = new THREE.PointsMaterial({
-    size: 0.08,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.65,
-    sizeAttenuation: true,
-    depthWrite: false,
-  });
-
-  const particles = new THREE.Points(particleGeo, particleMat);
-  scene.add(particles);
-
-  /* ────────────────────────────────────────────────────────
-     4. LION CAPITAL OUTLINE — geometric silhouette
-  ──────────────────────────────────────────────────────── */
-  const lionGroup = new THREE.Group();
-  scene.add(lionGroup);
-
-  function addCircleOutline(cx, cy, rx, ry, segs, color, opacity) {
-    const pts = [];
-    for (let i = 0; i <= segs; i++) {
-      const a = (i / segs) * Math.PI * 2;
-      pts.push(new THREE.Vector3(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry, 0));
-    }
-    const geo = new THREE.BufferGeometry().setFromPoints(pts);
-    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
-    return new THREE.Line(geo, mat);
-  }
-
-  // Three lion-head silhouettes
-  lionGroup.add(addCircleOutline(-1.4, 0.6, 0.5, 0.42, 32, COL_GOLD, 0.22));
-  lionGroup.add(addCircleOutline( 1.4, 0.6, 0.5, 0.42, 32, COL_GOLD, 0.22));
-  lionGroup.add(addCircleOutline( 0.0, 1.2, 0.5, 0.42, 32, COL_GOLD, 0.28));
-
-  // Abacus bar
-  const abGeo = new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(-2.2, -0.2, 0),
-    new THREE.Vector3( 2.2, -0.2, 0),
-  ]);
-  const abMat = new THREE.LineBasicMaterial({ color: COL_GOLD, transparent: true, opacity: 0.25 });
-  lionGroup.add(new THREE.Line(abGeo, abMat));
-
-  // Column
-  const colGeo = new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(0, -0.2, 0),
-    new THREE.Vector3(0, -2.0, 0),
-  ]);
-  const colMat = new THREE.LineBasicMaterial({ color: COL_GOLD, transparent: true, opacity: 0.2 });
-  lionGroup.add(new THREE.Line(colGeo, colMat));
-
-  lionGroup.position.set(0, 0, -0.5);
-  lionGroup.scale.setScalar(1.6);
-
-  /* ────────────────────────────────────────────────────────
-     5. AMBIENT GLOW — fog plane
-  ──────────────────────────────────────────────────────── */
-  const glowGeo = new THREE.PlaneGeometry(30, 30);
-  const glowMat = new THREE.MeshBasicMaterial({
-    color: 0x0D0A06,
-    transparent: true,
-    opacity: 0.0,
-    depthWrite: false,
-  });
-  const glowPlane = new THREE.Mesh(glowGeo, glowMat);
-  glowPlane.position.z = -3;
-  scene.add(glowPlane);
-
-  /* ── Resize handler ──────────────────────────────────── */
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
-  /* ── Scroll offset ───────────────────────────────────── */
-  let scrollY = 0;
-  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
-
-  /* ── Animation Loop ──────────────────────────────────── */
-  const clock = new THREE.Clock();
-  let frame = 0;
-
-  function animate() {
-    requestAnimationFrame(animate);
-    frame++;
-    const t    = clock.getElapsedTime();
-    const dt   = clock.getDelta ? 0.016 : 0.016;
-    const sc   = getScale();
-
-    // Smooth pointer lerp
-    pointer.x += (pointer.tx - pointer.x) * 0.06;
-    pointer.y += (pointer.ty - pointer.y) * 0.06;
-
-    // ── Camera parallax from pointer
-    camera.position.x += (pointer.x * 1.8 * sc - camera.position.x) * 0.04;
-    camera.position.y += (pointer.y * 1.2 * sc - camera.position.y) * 0.04;
-    camera.lookAt(scene.position);
-
-    // ── Lotus — slow breath + pointer tilt
-    lotusGroup.scale.setScalar(sc);
-    lotusGroup.rotation.z = t * 0.08 + pointer.x * 0.3;
-    lotusGroup.rotation.x = pointer.y * 0.2;
-    lotus1.rotation.z     = -t * 0.04;
-    lotus2.rotation.z     =  t * 0.06;
-    lotus3.rotation.z     = -t * 0.09;
-
-    // Petal flutter (vary opacity with sine)
-    lotus1.children.forEach((m, i) => {
-      m.material.opacity = 0.12 + 0.08 * Math.sin(t * 0.7 + i * 0.5);
-    });
-    lotus2.children.forEach((m, i) => {
-      m.material.opacity = 0.16 + 0.1 * Math.sin(t * 0.9 + i * 0.4 + 1);
-    });
-
-    // ── Chakra — constant slow rotation + pointer influence
-    chakraGroup.scale.setScalar(sc);
-    chakraGroup.rotation.z = t * 0.12 + pointer.x * 0.15;
-    chakraGroup.rotation.y = pointer.x * 0.1;
-    chakraGroup.rotation.x = pointer.y * 0.08;
-
-    // Breathe opacity
-    rimMat.opacity = 0.4 + 0.2 * Math.sin(t * 0.5);
-
-    // ── Lion capital — subtle float
-    lionGroup.scale.setScalar(sc);
-    lionGroup.position.y = 0.15 * Math.sin(t * 0.4);
-    lionGroup.rotation.y = pointer.x * 0.12;
-    lionGroup.rotation.x = pointer.y * 0.06;
-
-    // ── Particles — orbit drift + pointer warp
-    const pos = particleGeo.attributes.position;
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const v = velocities[i];
-      v.phi += v.phi > 0 ? 0.0008 : -0.0008;
-      // Gentle pointer repulsion
-      const px = pos.getX(i);
-      const py = pos.getY(i);
-      const dx = px - pointer.x * 3;
-      const dy = py - pointer.y * 3;
-      const d2 = dx * dx + dy * dy;
-      if (d2 < 4) {
-        const f = 0.002 / (d2 + 0.1);
-        pos.setXYZ(i,
-          px + dx * f,
-          py + dy * f,
-          pos.getZ(i)
-        );
-      } else {
-        // Return toward natural orbit
-        const targetX = v.r * Math.cos(t * 0.05 + i) * Math.cos(i * 0.3);
-        const targetY = v.r * Math.sin(i * 0.3) * 0.5;
-        pos.setXYZ(i,
-          px + (targetX - px) * 0.003,
-          py + (targetY - py) * 0.003,
-          pos.getZ(i)
-        );
+      /* ── Responsive Camera ───────────────────────────────── */
+      function getScale() {
+        const w = window.innerWidth;
+        if (w < 480) return 0.45;
+        if (w < 768) return 0.65;
+        if (w < 1024) return 0.82;
+        return 1.0;
       }
-    }
-    pos.needsUpdate = true;
 
-    // ── Scroll fade — fade 3D as user scrolls down
-    const scrollFade = Math.max(0, 1 - scrollY / (window.innerHeight * 0.8));
-    renderer.domElement.style.opacity = scrollFade * 0.9;
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+      camera.position.set(0, 0, 14);
 
-    renderer.render(scene, camera);
-  }
+      /* ── Pointer (normalised -1..1) ─────────────────────── */
+      const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 
-  animate();
+      window.addEventListener('mousemove', e => {
+        pointer.tx = (e.clientX / window.innerWidth) * 2 - 1;
+        pointer.ty = -(e.clientY / window.innerHeight) * 2 + 1;
+      });
 
-  /* ── Portrait drag-and-drop ──────────────────────────── */
-  const dropTarget = document.getElementById('portrait-drop');
-  if (dropTarget) {
-    dropTarget.addEventListener('dragover', e => { e.preventDefault(); dropTarget.style.borderColor = 'var(--gold)'; });
-    dropTarget.addEventListener('dragleave', () => { dropTarget.style.borderColor = ''; });
-    dropTarget.addEventListener('drop', e => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      if (!file || !file.type.startsWith('image/')) return;
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const img = document.createElement('img');
-        img.src = ev.target.result;
-        img.className = 'portrait-img';
-        img.alt = 'Portrait';
-        dropTarget.parentNode.replaceChild(img, dropTarget);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
+      window.addEventListener('touchmove', e => {
+        if (!e.touches.length) return;
+        const t = e.touches[0];
+        pointer.tx = (t.clientX / window.innerWidth) * 2 - 1;
+        pointer.ty = -(t.clientY / window.innerHeight) * 2 + 1;
+      }, { passive: true });
 
-  /* ── Scroll reveal ────────────────────────────────────── */
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer  = new IntersectionObserver(
-    entries => entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
+      /* ── Colours ─────────────────────────────────────────── */
+      const COL_SAFFRON = new THREE.Color(0xFF9933);
+      const COL_WHITE = new THREE.Color(0xFFFFFF);
+      const COL_GREEN = new THREE.Color(0x138808);
+      const COL_GOLD = new THREE.Color(0xC9A84C);
+      const COL_BLUE = new THREE.Color(0x1A3C8F);
+      const COL_GOLDL = new THREE.Color(0xF0D080);
+
+      /* ────────────────────────────────────────────────────────
+         1. LOTUS - Layered petal rings
+      ──────────────────────────────────────────────────────── */
+      const lotusGroup = new THREE.Group();
+      scene.add(lotusGroup);
+
+      function makePetal(radiusX, radiusY, petalCount, yOffset, color, opacity, tilt) {
+        const group = new THREE.Group();
+        group.position.y = yOffset;
+        const shape = new THREE.Shape();
+        shape.moveTo(0, 0);
+        shape.bezierCurveTo(-radiusX * 0.4, radiusY * 0.4, -radiusX * 0.4, radiusY, 0, radiusY);
+        shape.bezierCurveTo(radiusX * 0.4, radiusY, radiusX * 0.4, radiusY * 0.4, 0, 0);
+
+        const geo = new THREE.ShapeGeometry(shape, 20);
+        const mat = new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        });
+
+        for (let i = 0; i < petalCount; i++) {
+          const mesh = new THREE.Mesh(geo, mat.clone());
+          mesh.rotation.z = (i / petalCount) * Math.PI * 2;
+          mesh.rotation.x = tilt;
+          group.add(mesh);
+        }
+        return group;
       }
-    }),
-    { threshold: 0.12 }
-  );
-  revealEls.forEach(el => observer.observe(el));
 
-})();
-</script>
+      // Layer 1 - outermost, saffron, spread
+      const lotus1 = makePetal(0.45, 2.8, 12, -0.2, COL_SAFFRON, 0.18, 0.55);
+      // Layer 2 - mid, warm gold
+      const lotus2 = makePetal(0.35, 2.0, 10, 0.0, COL_GOLD, 0.22, 0.4);
+      // Layer 3 - inner, bright gold
+      const lotus3 = makePetal(0.28, 1.3, 8, 0.2, COL_GOLDL, 0.30, 0.25);
+      // Centre bud
+      const budGeo = new THREE.SphereGeometry(0.22, 16, 16);
+      const budMat = new THREE.MeshBasicMaterial({ color: COL_SAFFRON, transparent: true, opacity: 0.8 });
+      const bud = new THREE.Mesh(budGeo, budMat);
+
+      lotusGroup.add(lotus1, lotus2, lotus3, bud);
+      lotusGroup.position.set(0, 0, 0);
+
+      /* ────────────────────────────────────────────────────────
+         2. ASHOKA CHAKRA - Spoke wheel
+      ──────────────────────────────────────────────────────── */
+      const chakraGroup = new THREE.Group();
+      scene.add(chakraGroup);
+
+      // Outer rim
+      const rimGeo = new THREE.TorusGeometry(4.2, 0.045, 12, 120);
+      const rimMat = new THREE.MeshBasicMaterial({ color: COL_BLUE, transparent: true, opacity: 0.55 });
+      const rim = new THREE.Mesh(rimGeo, rimMat);
+      chakraGroup.add(rim);
+
+      // Inner rim
+      const innerRimGeo = new THREE.TorusGeometry(3.6, 0.025, 8, 100);
+      const innerRimMat = new THREE.MeshBasicMaterial({ color: COL_BLUE, transparent: true, opacity: 0.3 });
+      chakraGroup.add(new THREE.Mesh(innerRimGeo, innerRimMat));
+
+      // 24 spokes
+      const spokeMat = new THREE.LineBasicMaterial({ color: COL_BLUE, transparent: true, opacity: 0.5 });
+      for (let i = 0; i < 24; i++) {
+        const angle = (i / 24) * Math.PI * 2;
+        const pts = [
+          new THREE.Vector3(0, 0, 0),
+          new THREE.Vector3(Math.cos(angle) * 4.2, Math.sin(angle) * 4.2, 0),
+        ];
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        chakraGroup.add(new THREE.Line(geo, spokeMat));
+      }
+
+      // Hub
+      const hubGeo = new THREE.CircleGeometry(0.18, 24);
+      const hubMat = new THREE.MeshBasicMaterial({ color: COL_BLUE, transparent: true, opacity: 0.7 });
+      chakraGroup.add(new THREE.Mesh(hubGeo, hubMat));
+
+      chakraGroup.position.set(0, 0, -1);
+      // size up 1.3x
+      chakraGroup.scale.setScalar(1.3);
+
+      /* ────────────────────────────────────────────────────────
+         3. PARTICLE FIELD - tricolour dust
+      ──────────────────────────────────────────────────────── */
+      const PARTICLE_COUNT = 380;
+      const positions = new Float32Array(PARTICLE_COUNT * 3);
+      const colors = new Float32Array(PARTICLE_COUNT * 3);
+      const sizes = new Float32Array(PARTICLE_COUNT);
+      const velocities = [];
+
+      const triColors = [COL_SAFFRON, COL_WHITE, COL_GREEN, COL_GOLD];
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const r = 3.5 + Math.random() * 8;
+        const phi = Math.random() * Math.PI * 2;
+        const th = (Math.random() - 0.5) * Math.PI * 0.6;
+
+        positions[i * 3] = r * Math.cos(phi) * Math.cos(th);
+        positions[i * 3 + 1] = r * Math.sin(th);
+        positions[i * 3 + 2] = r * Math.sin(phi) * Math.cos(th) * 0.5;
+
+        const c = triColors[Math.floor(Math.random() * triColors.length)];
+        colors[i * 3] = c.r;
+        colors[i * 3 + 1] = c.g;
+        colors[i * 3 + 2] = c.b;
+
+        sizes[i] = 0.04 + Math.random() * 0.1;
+
+        velocities.push({
+          phi: (Math.random() - 0.5) * 0.003,
+          th: (Math.random() - 0.5) * 0.001,
+          r: r,
+        });
+      }
+
+      const particleGeo = new THREE.BufferGeometry();
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      particleGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+      const particleMat = new THREE.PointsMaterial({
+        size: 0.08,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.65,
+        sizeAttenuation: true,
+        depthWrite: false,
+      });
+
+      const particles = new THREE.Points(particleGeo, particleMat);
+      scene.add(particles);
+
+      /* ────────────────────────────────────────────────────────
+         4. LION CAPITAL OUTLINE - geometric silhouette
+      ──────────────────────────────────────────────────────── */
+      const lionGroup = new THREE.Group();
+      scene.add(lionGroup);
+
+      function addCircleOutline(cx, cy, rx, ry, segs, color, opacity) {
+        const pts = [];
+        for (let i = 0; i <= segs; i++) {
+          const a = (i / segs) * Math.PI * 2;
+          pts.push(new THREE.Vector3(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry, 0));
+        }
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+        return new THREE.Line(geo, mat);
+      }
+
+      // Three lion-head silhouettes
+      lionGroup.add(addCircleOutline(-1.4, 0.6, 0.5, 0.42, 32, COL_GOLD, 0.22));
+      lionGroup.add(addCircleOutline(1.4, 0.6, 0.5, 0.42, 32, COL_GOLD, 0.22));
+      lionGroup.add(addCircleOutline(0.0, 1.2, 0.5, 0.42, 32, COL_GOLD, 0.28));
+
+      // Abacus bar
+      const abGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-2.2, -0.2, 0),
+        new THREE.Vector3(2.2, -0.2, 0),
+      ]);
+      const abMat = new THREE.LineBasicMaterial({ color: COL_GOLD, transparent: true, opacity: 0.25 });
+      lionGroup.add(new THREE.Line(abGeo, abMat));
+
+      // Column
+      const colGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, -0.2, 0),
+        new THREE.Vector3(0, -2.0, 0),
+      ]);
+      const colMat = new THREE.LineBasicMaterial({ color: COL_GOLD, transparent: true, opacity: 0.2 });
+      lionGroup.add(new THREE.Line(colGeo, colMat));
+
+      lionGroup.position.set(0, 0, -0.5);
+      lionGroup.scale.setScalar(1.6);
+
+      /* ────────────────────────────────────────────────────────
+         5. AMBIENT GLOW - fog plane
+      ──────────────────────────────────────────────────────── */
+      const glowGeo = new THREE.PlaneGeometry(30, 30);
+      const glowMat = new THREE.MeshBasicMaterial({
+        color: 0x0D0A06,
+        transparent: true,
+        opacity: 0.0,
+        depthWrite: false,
+      });
+      const glowPlane = new THREE.Mesh(glowGeo, glowMat);
+      glowPlane.position.z = -3;
+      scene.add(glowPlane);
+
+      /* ── Resize handler ──────────────────────────────────── */
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      /* ── Scroll offset ───────────────────────────────────── */
+      let scrollY = 0;
+      window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+      /* ── Animation Loop ──────────────────────────────────── */
+      const clock = new THREE.Clock();
+      let frame = 0;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        frame++;
+        const t = clock.getElapsedTime();
+        const dt = clock.getDelta ? 0.016 : 0.016;
+        const sc = getScale();
+
+        // Smooth pointer lerp
+        pointer.x += (pointer.tx - pointer.x) * 0.06;
+        pointer.y += (pointer.ty - pointer.y) * 0.06;
+
+        // ── Camera parallax from pointer
+      camera.position.x = 0;
+camera.position.y = 0;
+camera.lookAt(scene.position);
+
+        // ── Lotus - slow breath + pointer tilt
+        lotusGroup.scale.setScalar(sc);
+        lotusGroup.rotation.z = t * 0.08;
+lotusGroup.rotation.x = 0;
+        lotus1.rotation.z = -t * 0.04;
+        lotus2.rotation.z = t * 0.06;
+        lotus3.rotation.z = -t * 0.09;
+
+        // Petal flutter (vary opacity with sine)
+        lotus1.children.forEach((m, i) => {
+          m.material.opacity = 0.12 + 0.08 * Math.sin(t * 0.7 + i * 0.5);
+        });
+        lotus2.children.forEach((m, i) => {
+          m.material.opacity = 0.16 + 0.1 * Math.sin(t * 0.9 + i * 0.4 + 1);
+        });
+
+        // ── Chakra - lock to portrait center in screen space
+        const portraitEl = document.querySelector('.portrait-frame');
+        if (portraitEl) {
+          const rect = portraitEl.getBoundingClientRect();
+          const cx = (rect.left + rect.width / 2) / window.innerWidth * 2 - 1;
+          const cy = (rect.top + rect.height / 2) / window.innerHeight * -2 + 1;
+          // Unproject to world Z=0 plane
+          const vec = new THREE.Vector3(cx, cy, 0.5);
+          vec.unproject(camera);
+          const dir = vec.sub(camera.position).normalize();
+          const dist = -camera.position.z / dir.z;
+          const worldPos = camera.position.clone().add(dir.multiplyScalar(dist));
+          chakraGroup.position.x = worldPos.x;
+          chakraGroup.position.y = worldPos.y;
+        }
+        chakraGroup.scale.setScalar(1.24 * sc);
+        // chakraGroup.rotation.z = t * 0.12 + pointer.x * 0.15;
+        chakraGroup.rotation.z = t * 0.12;
+        // chakraGroup.rotation.y = pointer.x * 0.1; cursor's position based tracking animation
+        // chakraGroup.rotation.x = pointer.y * 0.08; chakra will follow mouse movement
+        chakraGroup.rotation.y = 0;
+        chakraGroup.rotation.x = 0;
+        // Breathe opacity
+        rimMat.opacity = 0.4 + 0.2 * Math.sin(t * 0.5);
+
+        // ── Lion capital - subtle float
+        lionGroup.scale.setScalar(sc);
+        lionGroup.position.y = 0.15 * Math.sin(t * 0.4);
+        lionGroup.rotation.y = 0;
+lionGroup.rotation.x = 0;
+
+        // ── Particles - orbit drift + pointer warp
+        const pos = particleGeo.attributes.position;
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          const v = velocities[i];
+          v.phi += v.phi > 0 ? 0.0008 : -0.0008;
+          // Gentle pointer repulsion
+          const px = pos.getX(i);
+          const py = pos.getY(i);
+          const dx = px - pointer.x * 3;
+          const dy = py - pointer.y * 3;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 4) {
+            const f = 0.002 / (d2 + 0.1);
+            pos.setXYZ(i,
+              px + dx * f,
+              py + dy * f,
+              pos.getZ(i)
+            );
+          } else {
+            // Return toward natural orbit
+            const targetX = v.r * Math.cos(t * 0.05 + i) * Math.cos(i * 0.3);
+            const targetY = v.r * Math.sin(i * 0.3) * 0.5;
+            pos.setXYZ(i,
+              px + (targetX - px) * 0.003,
+              py + (targetY - py) * 0.003,
+              pos.getZ(i)
+            );
+          }
+        }
+        pos.needsUpdate = true;
+
+        // ── Scroll fade - fade 3D as user scrolls down
+        const scrollFade = Math.max(0, 1 - scrollY / (window.innerHeight * 0.8));
+        renderer.domElement.style.opacity = scrollFade * 0.9;
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      /* ── Portrait drag-and-drop ──────────────────────────── */
+      const dropTarget = document.getElementById('portrait-drop');
+      if (dropTarget) {
+        dropTarget.addEventListener('dragover', e => { e.preventDefault(); dropTarget.style.borderColor = 'var(--gold)'; });
+        dropTarget.addEventListener('dragleave', () => { dropTarget.style.borderColor = ''; });
+        dropTarget.addEventListener('drop', e => {
+          e.preventDefault();
+          const file = e.dataTransfer.files[0];
+          if (!file || !file.type.startsWith('image/')) return;
+          const reader = new FileReader();
+          reader.onload = ev => {
+            const img = document.createElement('img');
+            img.src = ev.target.result;
+            img.className = 'portrait-img';
+            img.alt = 'Portrait';
+            dropTarget.parentNode.replaceChild(img, dropTarget);
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      /* ── Scroll reveal ────────────────────────────────────── */
+      const revealEls = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+          }
+        }),
+        { threshold: 0.12 }
+      );
+      revealEls.forEach(el => observer.observe(el));
+
+    })();
+  </script>
 </body>
+
 </html>
