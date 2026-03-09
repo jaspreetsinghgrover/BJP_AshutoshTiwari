@@ -121,6 +121,7 @@
       z-index: 100;
       display: flex;
       align-items: stretch;
+      justify-content: space-between;
       background: linear-gradient(135deg,
           rgba(13, 10, 6, 0.97) 0%,
           rgba(26, 20, 8, 0.95) 50%,
@@ -199,15 +200,11 @@
 
     /* Divider */
     .header-divider {
-      width: 1px;
-      margin: 12px 0;
-      background: linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
-      flex-shrink: 0;
+      display: none;
     }
 
     /* Right: Nav */
     .header-nav {
-      flex: 1;
       overflow-x: auto;
       display: flex;
       align-items: center;
@@ -868,14 +865,10 @@
     <!-- Right: Scrollable Navigation -->
     <nav class="header-nav" role="navigation" aria-label="Section navigation">
       <a href="#hero" class="nav-item">Home</a>
-      <a href="#legacy" class="nav-item">The Legacy</a>
       <a href="#freedom" class="nav-item">Freedom Movement</a>
       <a href="#lineage" class="nav-item">Lineage</a>
-      <a href="#values" class="nav-item">Values</a>
       <a href="#timeline" class="nav-item">Timeline</a>
-      <a href="#symbols" class="nav-item">Symbols</a>
-      <a href="#vision" class="nav-item">Vision</a>
-      <a href="#contact" class="nav-item">Connect</a>
+      <a href="#vision" class="nav-item">Vision & Connect</a>
     </nav>
 
   </header>
@@ -920,57 +913,32 @@
       </div>
     </section>
 
-    <!-- ── LEGACY ─────────────────────────────────────── -->
-    <section id="legacy" class="section-full section-bg-saffron">
+    <!-- ── LEGACY & VALUES ─────────────────────────────────────── -->
+    <!-- <section id="legacy" class="section-full section-bg-saffron">
       <div class="section reveal">
-        <div class="section-label">Our Roots</div>
-        <h2 class="section-title">A Legacy Carved in Courage</h2>
-        <p class="section-subtitle">Generations who chose nation over self</p>
+        <div class="section-label">Our Foundation</div>
+        <h2 class="section-title">Legacy & Values</h2>
+        <p class="section-subtitle">Rooted in courage, guided by dharma</p>
 
-        <p
-          style="font-family:'EB Garamond',serif;font-size:clamp(1rem,1.6vw,1.18rem);color:rgba(250,243,224,0.78);line-height:1.85;max-width:800px;">
-          The story of this family is inseparable from the story of India itself. For nearly two centuries,
-          each generation has stepped forward when the motherland called - offering their voices, their freedoms,
-          and sometimes their lives in service of the dream of a free and unified Bharat.
+        <p style="font-family:'EB Garamond',serif;font-size:clamp(0.95rem,1.5vw,1.1rem);color:rgba(250,243,224,0.75);line-height:1.75;max-width:800px;margin-bottom:32px;">
+          For nearly two centuries, each generation has stepped forward when the motherland called - guided by the lotus (purity through adversity), the lion capital (strength and unity), and the Ashoka Chakra (dharma in action).
         </p>
-
-        <div class="quote-block" style="max-width:760px;margin-top:40px;">
-          <p class="quote-text">
-            "They did not merely witness history. They were its architects, its price, and its promise."
-          </p>
-          <span class="quote-attr">- Family Inscription, 1947</span>
-        </div>
 
         <div class="card-grid">
           <div class="card">
-            <div class="card-icon">
-              <img src="Bharatiya_Janata_Party_(icon).svg" alt="Lotus" width="48" height="48">
-            </div>
-            <div class="card-title">Rooted in the Tradition</div>
-            <p class="card-text">
-              Like the lotus that blooms unstained from the mud, this family rose through colonial oppression
-              to bear the flower of independence.
-            </p>
+            <div class="card-icon"><img src="om.png" alt="Truth" width="40" height="40"></div>
+            <div class="card-title">Satya & Ahimsa</div>
+            <p class="card-text">Truth and non-violence - the foundation of democratic resistance.</p>
           </div>
           <div class="card">
-            <div class="card-icon">
-              <img src="Emblem_of_India.svg" alt="Lion" width="48" height="48">
-            </div>
-            <div class="card-title">The Lion Capital's Resolve</div>
-            <p class="card-text">
-              Embodying the four lions of Ashoka's capital - vigilance, strength, pride, and unity -
-              they stood undivided through every trial.
-            </p>
+            <div class="card-icon"><img src="helpinghands.png" alt="Service" width="40" height="40"></div>
+            <div class="card-title">Seva & Nyaya</div>
+            <p class="card-text">Service to citizens and justice for the marginalized.</p>
           </div>
           <div class="card">
-            <div class="card-icon">
-              <img src="Ashoka_Chakra.svg" alt="Dharma Wheel" width="48" height="48">
-            </div>
-            <div class="card-title">The Wheel of Dharma</div>
-            <p class="card-text">
-              Guided by the Ashoka Chakra's twenty-four spokes - each a virtue, each a duty -
-              their political work was always in service of a higher law.
-            </p>
+            <div class="card-icon"><img src="unity.png" alt="Unity" width="40" height="40"></div>
+            <div class="card-title">Ekta & Gyan</div>
+            <p class="card-text">Unity across diversity and education as liberation.</p>
           </div>
         </div>
       </div>
@@ -981,14 +949,14 @@
         <circle cx="50" cy="50" r="40" fill="none" stroke="#C9A84C" stroke-width="3" opacity="0.5" />
         <circle cx="50" cy="50" r="6" fill="#C9A84C" opacity="0.5" />
       </svg>
-    </div>
+    </div> -->
 
     <!-- ── FREEDOM MOVEMENT ───────────────────────────── -->
     <section id="freedom" class="section-full section-bg-green">
       <div class="section reveal">
         <div class="section-label">Itihas</div>
         <h2 class="section-title">Freedom Movement</h2>
-        <p class="section-subtitle">The battles they fought so we could be free</p>
+        <p class="section-subtitle">The battles we fought so you could be free</p>
 
         <div class="card-grid">
           <div class="card">
@@ -1108,102 +1076,7 @@
       </div>
     </section>
 
-    <!-- ── VALUES ────────────────────────────────────── -->
-    <section id="values" class="section-full section-bg-blue">
-      <div class="section reveal">
-        <div class="section-label">Adarsh</div>
-        <h2 class="section-title">Enduring Values</h2>
-        <p class="section-subtitle">The philosophy that has guided every generation</p>
 
-        <div class="card-grid">
-          <div class="card">
-            <div class="card-icon">
-              <img src="om.png" alt="Om" width="48" height="48">
-            </div>
-            <div class="card-title">Satya - Truth</div>
-            <p class="card-text">Unwavering commitment to truth in public life, modelled on the Gandhian principle that
-              political power must rest on moral foundations.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon">
-              <img src="peace.png" alt="Peace" width="48" height="48">
-            </div>
-            <div class="card-title">Ahimsa - Non-Violence</div>
-            <p class="card-text">The pen, the ballot, the peaceful march - not the sword. A tradition of democratic
-              resistance that has never compromised on non-violence.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon">
-              <img src="helpinghands.png" alt="Service" width="48" height="48">
-            </div>
-            <div class="card-title">Seva - Service</div>
-            <p class="card-text">Public office is not a throne but a responsibility. Every family member in politics has
-              held service to the common citizen as their highest obligation.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon">
-              <img src="justice.png" alt="Justice" width="48" height="48">
-            </div>
-            <div class="card-title">Nyaya - Justice</div>
-            <p class="card-text">From land reforms to legal aid, the family has been a consistent advocate for the
-              rights of the marginalised, the landless, and the voiceless.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon">
-              <img src="unity.png" alt="Unity" width="48" height="48">
-            </div>
-            <div class="card-title">Ekta - Unity</div>
-            <p class="card-text">Across caste, religion, and language - the family's politics has always been one of
-              inclusion, mirroring the pluralism of India itself.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon">
-              <img src="knowledge.png" alt="Knowledge" width="48" height="48">
-            </div>
-            <div class="card-title">Gyan - Knowledge</div>
-            <p class="card-text">Believing education to be the foundation of freedom, every generation has championed
-              universal literacy, founding schools and scholarships.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── SYMBOLS ───────────────────────────────────── -->
-    <section id="symbols" class="section reveal">
-      <div class="section-label">Chinh</div>
-      <h2 class="section-title">Sacred Symbols</h2>
-      <p class="section-subtitle">The icons that define a heritage</p>
-
-      <div class="card-grid">
-        <div class="card" style="text-align:center;">
-          <div class="card-icon">
-            <img src="Bharatiya_Janata_Party_(icon).svg" alt="Lotus" width="64" height="64">
-          </div>
-          <div class="card-title">The Lotus - Padma</div>
-          <p class="card-text">Rising pure through adversity, the lotus is the emblem of spiritual and political
-            awakening - the soul of India's renaissance.</p>
-        </div>
-
-        <div class="card" style="text-align:center;">
-          <div class="card-icon">
-            <img src="Emblem_of_India.svg" alt="Lion Capital" width="64" height="64">
-          </div>
-          <div class="card-title">Lion Capital - Simha Stambha</div>
-          <p class="card-text">Emperor Ashoka's crowning symbol: four lions facing four directions, proclaiming that
-            India's dharma knows no boundary.</p>
-        </div>
-
-        <div class="card" style="text-align:center;">
-          <div class="card-icon">
-            <img src="Ashoka_Chakra.svg" alt="Ashoka Chakra" width="64" height="64">
-          </div>
-          </svg>
-          <div class="card-title">Ashoka Chakra - Wheel of Dharma</div>
-          <p class="card-text">Twenty-four spokes for twenty-four virtues. The wheel that stopped Britain's conquest of
-            India's spirit, placed at the centre of our national flag.</p>
-        </div>
-      </div>
-    </section>
 
     <!-- ── TIMELINE ──────────────────────────────────── -->
     <section id="timeline" class="section-full section-bg-saffron">
@@ -1265,81 +1138,21 @@
       </div>
     </section>
 
-    <!-- ── VISION ─────────────────────────────────── -->
-    <section id="vision" class="section reveal">
-      <div class="section-label">Drishtikon</div>
-      <h2 class="section-title">The Vision Forward</h2>
-      <p class="section-subtitle">What we stand for today</p>
+    <!-- ── VISION & CONTACT ─────────────────────────────────── -->
+    <section id="vision" class="section reveal" style="text-align:center;max-width:700px;margin-left:auto;margin-right:auto;">
+      <div class="section-label" style="justify-content:center;">Vision & Connect</div>
+      <h2 class="section-title">Moving Forward Together</h2>
+      <p class="section-subtitle">Constitutional democracy, rural development, education for all</p>
 
-      <div class="quote-block">
-        <p class="quote-text">
-          "A nation that forgets its freedom fighters forgets itself. We remember so that we may continue."
-        </p>
-        <span class="quote-attr">- Current Generation</span>
-      </div>
-
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-title">Constitutional Democracy</div>
-          <p class="card-text">Protecting the Constitution of India - Dr. Ambedkar's gift - from all who would weaken
-            its secular, democratic foundations.</p>
-        </div>
-        <div class="card">
-          <div class="card-title">Rural Development</div>
-          <p class="card-text">The independence dream was for every Indian, not just the cities. Sustained focus on
-            agricultural reform, irrigation, and rural infrastructure.</p>
-        </div>
-        <div class="card">
-          <div class="card-title">Education for All</div>
-          <p class="card-text">Universal, quality public education from village to university - the single greatest
-            investment a free nation can make in itself.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── CONTACT ────────────────────────────────── -->
-    <section id="contact" class="section reveal"
-      style="text-align:center;max-width:700px;margin-left:auto;margin-right:auto;">
-      <div class="section-label" style="justify-content:center;">Sampark</div>
-      <h2 class="section-title">Connect with the Movement</h2>
-      <p class="section-subtitle">Join the continuing legacy of service</p>
-
-      <p
-        style="font-family:'EB Garamond',serif;font-size:1.05rem;color:rgba(250,243,224,0.7);line-height:1.8;margin-bottom:36px;">
-        Whether you are a researcher, a citizen, or a fellow traveller in the cause of democratic India -
-        this history belongs to all of us.
+      <p style="font-family:'EB Garamond',serif;font-size:1rem;color:rgba(250,243,224,0.7);line-height:1.75;margin-bottom:32px;">
+        Protecting Dr. Ambedkar's Constitution, championing agricultural reform, and ensuring universal education - the independence dream continues for every Indian.
       </p>
 
       <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-        <a href="mailto:contact@legacy.in" style="
-        font-family:'Cinzel',serif;
-        font-size:0.78rem;
-        letter-spacing:0.15em;
-        text-transform:uppercase;
-        color:var(--dark);
-        background:var(--gold);
-        padding:12px 28px;
-        border-radius:3px;
-        text-decoration:none;
-        transition:all 0.25s;
-        display:inline-block;
-      " onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">
+        <a href="mailto:contact@legacy.in" style="font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dark);background:var(--gold);padding:12px 28px;border-radius:3px;text-decoration:none;transition:all 0.25s;display:inline-block;" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">
           Write to Us
         </a>
-        <a href="#legacy" style="
-        font-family:'Cinzel',serif;
-        font-size:0.78rem;
-        letter-spacing:0.15em;
-        text-transform:uppercase;
-        color:var(--gold);
-        background:transparent;
-        border:1px solid rgba(201,168,76,0.4);
-        padding:12px 28px;
-        border-radius:3px;
-        text-decoration:none;
-        transition:all 0.25s;
-        display:inline-block;
-      " onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.4)'">
+        <a href="#legacy" style="font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid rgba(201,168,76,0.4);padding:12px 28px;border-radius:3px;text-decoration:none;transition:all 0.25s;display:inline-block;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.4)'">
           Read the Legacy
         </a>
       </div>
