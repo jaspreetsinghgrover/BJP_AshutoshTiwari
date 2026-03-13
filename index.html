@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ashutosh Tiwari| BJP Karyakarta</title>
+  <title>Ashutosh Tiwari | BJP Karyakarta</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -270,7 +270,45 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
-      padding: 60px 24px;
+      padding: 40px 24px;
+    }
+
+    /* Hero background slideshow */
+    .hero-slideshow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .hero-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+    }
+
+    .hero-slide::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(13, 10, 6, 0.75);
+      backdrop-filter: blur(2px);
     }
 
     .hero-content {
@@ -294,11 +332,11 @@
     }
 
     .portrait-frame {
-      --frame-size: clamp(180px, 28vw, 320px);
+      --frame-size: clamp(140px, 22vw, 260px);
       --ring-size: calc(var(--frame-size) * 2);
       width: var(--frame-size);
       height: var(--frame-size);
-      margin: 0 auto 40px;
+      margin: 0 auto 30px;
       position: relative;
       display: flex;
       align-items: center;
@@ -412,7 +450,7 @@
 
     .hero-name {
       font-family: 'Cinzel Decorative', serif;
-      font-size: clamp(1.8rem, 6vw, 4.5rem);
+      font-size: clamp(1.6rem, 5vw, 3.5rem);
       font-weight: 900;
       line-height: 1.05;
       color: var(--gold-light);
@@ -432,12 +470,12 @@
 
     .hero-tagline {
       font-family: 'EB Garamond', serif;
-      font-size: clamp(0.95rem, 2vw, 1.3rem);
+      font-size: clamp(0.85rem, 1.6vw, 1.1rem);
       font-style: italic;
       color: rgba(250, 243, 224, 0.7);
       max-width: 640px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
+      margin: 0 auto 24px;
+      line-height: 1.6;
     }
 
     .hero-dates {
@@ -880,6 +918,9 @@
 
     <!-- ── HERO ─────────────────────────────────────────── -->
     <section id="hero">
+      <!-- Background Slideshow -->
+      <div class="hero-slideshow" id="heroSlideshow"></div>
+      
       <div class="hero-content">
 
         <!-- Portrait -->
@@ -906,7 +947,7 @@
           "From the flames of the First War of Independence to the halls of democratic power:
           A Dynasty forged in sacrifice, tempered by truth."
         </p>
-        <p class="hero-tagline" style="margin-top: 24px; margin-bottom: 40px;">
+        <p class="hero-tagline" style="margin-top: 16px; margin-bottom: 24px;">
           Born in Bathinda, Punjab to a spiritual Hindu Brahmin family, a third-generation Swayam Sewak who graduated from DAV College Bathinda, carrying forward a legacy of service and dedication.
         </p>
         <div class="hero-dates">RSS → ABVP → BJYM → BJP</div>
