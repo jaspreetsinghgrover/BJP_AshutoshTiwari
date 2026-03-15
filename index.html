@@ -910,6 +910,7 @@
     <!-- Right: Scrollable Navigation -->
     <nav class="header-nav" role="navigation" aria-label="Section navigation">
       <a href="#hero" class="nav-item">Home</a>
+      <a href="#journey" class="nav-item">The Journey</a>
       <a href="#freedom" class="nav-item">Freedom Movement</a>
       <a href="#lineage" class="nav-item">Lineage</a>
       <a href="#timeline" class="nav-item">Timeline</a>
@@ -955,11 +956,296 @@
           A Dynasty forged in sacrifice, tempered by truth."
         </p> -->
         <p class="hero-tagline" style="margin-top: 16px; margin-bottom: 24px;">
-          Born in Bathinda, Punjab to a Hindu Brahmin family, a third-generation Swayam Sewak graduated from DAV College Bathinda, carrying forward a legacy of service and dedication.
+          Born in Bathinda, Punjab to a Hindu Brahmin family, a third-generation Swayam Sewak graduated from DAV College Bathinda &#8212; raised in the shadow of the Sangh, carrying forward a legacy of service and dedication.
         </p>
-        <!-- <div class="hero-dates">RSS → ABVP → BJYM → BJP</div> -->
       </div>
     </section>
+
+    <!-- &#9472;&#9472; POLITICAL JOURNEY &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; -->
+    <section id="journey" class="section-full">
+      <style>
+        #journey {
+          background: linear-gradient(170deg, rgba(13,10,6,1) 0%, rgba(26,18,6,0.98) 40%, rgba(13,10,6,1) 100%);
+          overflow: hidden;
+          position: relative;
+        }
+        #journey::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(ellipse 60% 40% at 10% 50%, rgba(255,153,51,0.07) 0%, transparent 70%),
+            radial-gradient(ellipse 50% 40% at 90% 50%, rgba(19,136,8,0.06) 0%, transparent 70%);
+          pointer-events: none;
+        }
+        .journey-inner {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: clamp(60px,8vw,110px) clamp(20px,6vw,80px);
+          position: relative;
+          z-index: 2;
+        }
+        .journey-path {
+          position: relative;
+          padding-top: 20px;
+        }
+        .journey-path::before {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 0; bottom: 0;
+          width: 2px;
+          transform: translateX(-50%);
+          background: linear-gradient(to bottom, var(--saffron) 0%, var(--gold) 30%, white 50%, var(--gold) 70%, var(--india-green) 100%);
+          opacity: 0.35;
+        }
+        .journey-step {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 56px;
+          position: relative;
+          opacity: 0;
+          transform: translateY(28px);
+          transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+        .journey-step.visible { opacity: 1; transform: none; }
+        .journey-step:nth-child(odd)  { flex-direction: row; }
+        .journey-step:nth-child(even) { flex-direction: row-reverse; }
+        .journey-card {
+          width: calc(50% - 40px);
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(201,168,76,0.18);
+          border-radius: 10px;
+          padding: 26px 28px;
+          position: relative;
+          transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+          cursor: default;
+        }
+        .journey-card:hover {
+          background: rgba(201,168,76,0.07);
+          border-color: rgba(201,168,76,0.4);
+          box-shadow: 0 8px 36px rgba(0,0,0,0.35);
+        }
+        .journey-card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 2px;
+          border-radius: 10px 10px 0 0;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .journey-card:hover::before { opacity: 1; }
+        .journey-step:nth-child(1) .journey-card::before { background: linear-gradient(90deg, var(--saffron), var(--gold)); }
+        .journey-step:nth-child(2) .journey-card::before { background: linear-gradient(90deg, var(--gold), white); }
+        .journey-step:nth-child(3) .journey-card::before { background: linear-gradient(90deg, var(--saffron), var(--india-green)); }
+        .journey-step:nth-child(4) .journey-card::before { background: linear-gradient(90deg, var(--india-green), var(--gold)); }
+        .journey-step:nth-child(5) .journey-card::before { background: linear-gradient(90deg, var(--gold), var(--saffron)); }
+        .journey-step:nth-child(odd) .journey-card::after {
+          content: '';
+          position: absolute;
+          right: -10px; top: 28px;
+          border: 10px solid transparent;
+          border-left-color: rgba(201,168,76,0.22);
+        }
+        .journey-step:nth-child(even) .journey-card::after {
+          content: '';
+          position: absolute;
+          left: -10px; top: 28px;
+          border: 10px solid transparent;
+          border-right-color: rgba(201,168,76,0.22);
+        }
+        .journey-node {
+          width: 80px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 2;
+        }
+        .journey-node-dot {
+          width: 46px; height: 46px;
+          border-radius: 50%;
+          background: var(--dark);
+          border: 2px solid var(--gold);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.25rem;
+          box-shadow: 0 0 18px rgba(201,168,76,0.3);
+          transition: box-shadow 0.3s, border-color 0.3s;
+          color: var(--gold);
+        }
+        .journey-node-dot svg {
+          flex-shrink: 0;
+        }
+        .journey-step:hover .journey-node-dot {
+          box-shadow: 0 0 28px rgba(255,153,51,0.5);
+          border-color: var(--saffron);
+        }
+        .journey-era {
+          font-family: 'Cinzel', serif;
+          font-size: 0.68rem;
+          letter-spacing: 0.28em;
+          text-transform: uppercase;
+          color: var(--saffron);
+          margin-bottom: 6px;
+        }
+        .journey-heading {
+          font-family: 'Cinzel', serif;
+          font-size: clamp(0.88rem, 1.4vw, 1.05rem);
+          font-weight: 600;
+          color: var(--gold-light);
+          margin-bottom: 10px;
+          line-height: 1.3;
+        }
+        .journey-text {
+          font-family: 'EB Garamond', serif;
+          font-size: clamp(0.88rem, 1.3vw, 1rem);
+          color: rgba(250,243,224,0.68);
+          line-height: 1.75;
+        }
+        .journey-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-top: 14px;
+        }
+        .journey-tag {
+          font-family: 'Cinzel', serif;
+          font-size: 0.6rem;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          padding: 3px 10px;
+          border-radius: 20px;
+          border: 1px solid rgba(201,168,76,0.3);
+          color: rgba(201,168,76,0.7);
+          background: rgba(201,168,76,0.05);
+        }
+        .journey-step.journey-final .journey-card {
+          border-color: rgba(255,153,51,0.35);
+          background: rgba(255,153,51,0.04);
+        }
+        .journey-step.journey-final .journey-node-dot {
+          border-color: var(--saffron);
+          box-shadow: 0 0 24px rgba(255,153,51,0.45);
+          background: rgba(255,153,51,0.08);
+        }
+        @media (max-width: 700px) {
+          .journey-path::before { left: 22px; transform: none; }
+          .journey-step, .journey-step:nth-child(even) { flex-direction: row; }
+          .journey-card { width: 100%; }
+          .journey-node { width: 44px; }
+          .journey-step:nth-child(odd) .journey-card::after,
+          .journey-step:nth-child(even) .journey-card::after { display: none; }
+        }
+      </style>
+
+      <div class="journey-inner">
+        <div class="section-label">Safar Abhi Baaki Hai</div>
+        <h2 class="section-title">The Journey</h2>
+        <p class="section-subtitle">From a Swayamsewak household to the frontlines of democratic service</p>
+
+        <div class="journey-path" id="journeyPath">
+
+          <div class="journey-step">
+            <div class="journey-card">
+              <div class="journey-era">The Roots</div>
+              <div class="journey-heading">Grandfather: Shri Ramesh Chandra Ji</div>
+              <p class="journey-text">A devoted RSS activist of unwavering conviction, Shri Ramesh Chandra Ji dedicated his life to the Sangh&#8217;s ideals of national service, discipline, and cultural renaissance &#8212; laying the ideological foundation for generations to follow.</p>
+              <div class="journey-tags">
+                <span class="journey-tag">RSS</span>
+                <span class="journey-tag">Sangh Seva</span>
+              </div>
+            </div>
+            <div class="journey-node"><div class="journey-node-dot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div></div>
+            <div style="width:calc(50% - 40px)"></div>
+          </div>
+
+          <div class="journey-step">
+            <div style="width:calc(50% - 40px)"></div>
+            <div class="journey-node"><div class="journey-node-dot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-4 6-8 6-12a6 6 0 00-12 0c0 4 2 8 6 12z"/><line x1="12" y1="22" x2="12" y2="12"/></svg></div></div>
+            <div class="journey-card">
+              <div class="journey-era">Childhood &amp; Formation</div>
+              <div class="journey-heading">Raised in the Swayamsewak Tradition</div>
+              <p class="journey-text">Ashutosh spent his formative years immersed in the Swayamsewak environment &#8212; attending the 7-day RSS Shiksha Varg, followed by the rigorous 20-day Officer Training Camp (OTC) in both the first and second years &#8212; building character, discipline, and a deep sense of national purpose from an early age.</p>
+              <div class="journey-tags">
+                <span class="journey-tag">7-Day Shiksha Varg</span>
+                <span class="journey-tag">OTC Year 1</span>
+                <span class="journey-tag">OTC Year 2</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="journey-step">
+            <div class="journey-card">
+              <div class="journey-era">2003 &#8211; 2014</div>
+              <div class="journey-heading">ABVP: Rising Through the Ranks</div>
+              <p class="journey-text">Beginning as a college president at the district level, Ashutosh steadily rose through the Akhil Bharatiya Vidyarthi Parishad &#8212; serving as District Convener, Bathinda Zone Convener, State Joint Secretary (Punjab), State Secretary (Punjab), and ultimately as a National Executive Member of ABVP &#8212; a decade of student leadership that shaped his political acumen.</p>
+              <div class="journey-tags">
+                <span class="journey-tag">District President</span>
+                <span class="journey-tag">District Convener</span>
+                <span class="journey-tag">Zone Convener</span>
+                <span class="journey-tag">State Jt. Secretary</span>
+                <span class="journey-tag">State Secretary</span>
+                <span class="journey-tag">National Executive</span>
+              </div>
+            </div>
+            <div class="journey-node"><div class="journey-node-dot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z"/></svg></div></div>
+            <div style="width:calc(50% - 40px)"></div>
+          </div>
+
+          <div class="journey-step">
+            <div style="width:calc(50% - 40px)"></div>
+            <div class="journey-node"><div class="journey-node-dot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0011 17h2a2.5 2.5 0 002.5-2.5v-1a4.5 4.5 0 00-4.5-4.5 4.5 4.5 0 00-4.5 4.5v1z"/><line x1="12" y1="17" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/><path d="M12 9V3M9 6l3-3 3 3"/></svg></div></div>
+            <div class="journey-card">
+              <div class="journey-era">Youth Leadership</div>
+              <div class="journey-heading">BJYM &amp; Youth Against Corruption</div>
+              <p class="journey-text">Transitioning into youth politics, Ashutosh served as State Co-Convener of Youth Against Corruption, then went on to hold the office of District President, Bharatiya Janata Yuva Morcha (Bathinda Urban) &#8212; twice &#8212; before rising to State Secretary and then State Vice President of BJYM Punjab.</p>
+              <div class="journey-tags">
+                <span class="journey-tag">Youth Against Corruption</span>
+                <span class="journey-tag">2x District President</span>
+                <span class="journey-tag">State Secretary</span>
+                <span class="journey-tag">State Vice President</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="journey-step journey-final">
+            <div class="journey-card">
+              <div class="journey-era">The Road Ahead</div>
+              <div class="journey-heading">BJP &#8212; Safar Abhi Baaki Hai</div>
+              <p class="journey-text">The journey continues. From the shakha grounds of his grandfather&#8217;s era to the democratic arena of today, Ashutosh Tiwari carries forward the torch &#8212; as a committed BJP Karyakarta, the road is still long, and the work is far from done.</p>
+              <div class="journey-tags">
+                <span class="journey-tag">BJP</span>
+                <span class="journey-tag">Karyakarta</span>
+                <span class="journey-tag">Seva Jaari Hai</span>
+              </div>
+            </div>
+            <div class="journey-node"><div class="journey-node-dot"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 8 4 4 5c0 4 3 7 8 7z"/><path d="M12 12C12 7 16 4 20 5c0 4-3 7-8 7z"/><path d="M12 12C7 12 4 8 5 4c4 0 7 3 7 8z"/><path d="M12 12C17 12 20 8 19 4c-4 0-7 3-7 8z"/></svg></div></div>
+            <div style="width:calc(50% - 40px)"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          var steps = document.querySelectorAll('#journeyPath .journey-step');
+          var io = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e, idx) {
+              if (e.isIntersecting) {
+                setTimeout(function() { e.target.classList.add('visible'); }, idx * 130);
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.15 });
+          steps.forEach(function(s) { io.observe(s); });
+        })();
+      </script>
+    </section>
+
 
     <!-- ── LEGACY & VALUES ─────────────────────────────────────── -->
     <!-- <section id="legacy" class="section-full section-bg-saffron">
